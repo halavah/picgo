@@ -1,2 +1,2 @@
 # PinGo
-PinGo个人图床
+Speaking For Myself - PinGo
