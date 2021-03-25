@@ -11,4 +11,3 @@ Speaking For Myself - PicGo
 - [Images5](https://halavah.buzz/background/05.jpg)
 - [Images6](https://halavah.buzz/background/06.jpg)
 - [Images7](https://halavah.buzz/background/07.jpg)
-- [Images8](https://halavah.buzz/background/08.jpg)
