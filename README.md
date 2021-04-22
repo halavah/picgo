@@ -1,4 +1,4 @@
-### PinGo
+## PinGo
 Speaking For Myself - PicGo
 
 ### [Avatar：Example of use](https://github.com/halavah/PicGo/tree/master/avatar)
