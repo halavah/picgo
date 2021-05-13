@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Part03-集成Shiro实现个人账户-我的主页、基本设置 | Xblog</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/test/logo/favicon.ico">
+    <meta name="description" content="Project documentation">
+    
+    <link rel="preload" href="/test/assets/css/0.styles.1811a760.css" as="style"><link rel="preload" href="/test/assets/js/app.6710735c.js" as="script"><link rel="preload" href="/test/assets/js/2.5b8d21c8.js" as="script"><link rel="preload" href="/test/assets/js/17.c287f753.js" as="script"><link rel="prefetch" href="/test/assets/js/10.16589aca.js"><link rel="prefetch" href="/test/assets/js/11.ccdd61e4.js"><link rel="prefetch" href="/test/assets/js/12.ea2e7635.js"><link rel="prefetch" href="/test/assets/js/13.2f87eeae.js"><link rel="prefetch" href="/test/assets/js/14.83934acd.js"><link rel="prefetch" href="/test/assets/js/15.80219037.js"><link rel="prefetch" href="/test/assets/js/16.daccab4e.js"><link rel="prefetch" href="/test/assets/js/18.01402f92.js"><link rel="prefetch" href="/test/assets/js/19.99769197.js"><link rel="prefetch" href="/test/assets/js/20.b187f33a.js"><link rel="prefetch" href="/test/assets/js/21.e1747b39.js"><link rel="prefetch" href="/test/assets/js/22.ad38be71.js"><link rel="prefetch" href="/test/assets/js/23.17be09d6.js"><link rel="prefetch" href="/test/assets/js/24.c1ad7e7a.js"><link rel="prefetch" href="/test/assets/js/25.50e45c23.js"><link rel="prefetch" href="/test/assets/js/26.d32de95a.js"><link rel="prefetch" href="/test/assets/js/27.4a36609b.js"><link rel="prefetch" href="/test/assets/js/28.d387297e.js"><link rel="prefetch" href="/test/assets/js/3.87e74747.js"><link rel="prefetch" href="/test/assets/js/4.a5623ace.js"><link rel="prefetch" href="/test/assets/js/5.e8fc06c9.js"><link rel="prefetch" href="/test/assets/js/6.91b36dcf.js"><link rel="prefetch" href="/test/assets/js/7.dac76fb7.js"><link rel="prefetch" href="/test/assets/js/8.66dcb99f.js"><link rel="prefetch" href="/test/assets/js/9.bb572502.js">
+    <link rel="stylesheet" href="/test/assets/css/0.styles.1811a760.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/test/" class="home-link router-link-active"><img src="/test/logo/favicon.ico" alt="Xblog" class="logo"> <span class="site-name can-hide">Xblog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/test/" aria-current="page" class="sidebar-link">快速入手</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter01</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Chapter02</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test/Chapter02/Part01-集成Kaptcha实现用户注册.html" class="sidebar-link">Part01-集成Kaptcha实现用户注册</a></li><li><a href="/test/Chapter02/Part02-集成Shiro实现用户登录.html" class="sidebar-link">Part02-集成Shiro实现用户登录</a></li><li><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html" class="active sidebar-link">Part03-集成Shiro实现个人账户-我的主页、基本设置</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html#_3-1-个人账户-我的主页" class="sidebar-link">3.1 个人账户：我的主页</a></li><li class="sidebar-sub-header"><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html#_3-2-个人账户-基本设置-更新资料" class="sidebar-link">3.2 个人账户：基本设置-更新资料</a></li><li class="sidebar-sub-header"><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html#_3-2-个人账户-基本设置-更新头像-上传图片" class="sidebar-link">3.2 个人账户：基本设置-更新头像（上传图片）</a></li><li class="sidebar-sub-header"><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html#_3-3-个人账户-基本设置-更新头像-更新图片" class="sidebar-link">3.3 个人账户：基本设置-更新头像（更新图片）</a></li><li class="sidebar-sub-header"><a href="/test/Chapter02/Part03-集成Shiro实现个人账户-我的主页、基本设置.html#_3-4-个人账户-基本设置-更新密码" class="sidebar-link">3.4 个人账户：基本设置-更新密码</a></li></ul></li><li><a href="/test/Chapter02/Part04-集成Shiro实现个人账户-用户中心.html" class="sidebar-link">Part04-集成Shiro实现个人账户-用户中心</a></li><li><a href="/test/Chapter02/Part05-集成Shiro实现个人账户-我的消息.html" class="sidebar-link">Part05-集成Shiro实现个人账户-我的消息</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter03</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter04</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="part03-集成shiro实现个人账户-我的主页、基本设置"><a href="#part03-集成shiro实现个人账户-我的主页、基本设置" class="header-anchor">#</a> Part03-集成Shiro实现个人账户-我的主页、基本设置</h1> <div class="language-text extra-class"><pre class="language-text"><code>blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─common
+│      │          │  └─lang
+│      │          │         Consts.java
+│      │          │
+│      │          ├─config
+│      │          │      SpringMvcConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      UserController.java
+│      │          │
+│      │          ├─service
+│      │          │  │  UserService.java
+│      │          │  │
+│      │          │  └─impl
+│      │          │         UserServiceImpl.java
+│      │          ├
+│      │          ├─utils
+│      │          │      UploadUtil.java
+│      │
+│      └─resources
+│          │  application.yml
+│          │
+│          ├─templates
+│          │  └─user
+│          │        home.ftl
+│          │        set.ftl
+</code></pre></div><h2 id="_3-1-个人账户-我的主页"><a href="#_3-1-个人账户-我的主页" class="header-anchor">#</a> 3.1 个人账户：我的主页</h2> <ul><li><code>UserController.java</code> ：控制层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * 我的主页
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/home&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">home</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//用户：从Shiro中获取用户</span>
+        <span class="token class-name">User</span> user <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;user&quot;</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//文章：用户近期【30天】的文章</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Post</span><span class="token punctuation">&gt;</span></span> posts <span class="token operator">=</span> postService<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Post</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;user_id&quot;</span><span class="token punctuation">,</span> <span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">orderByDesc</span><span class="token punctuation">(</span><span class="token string">&quot;created&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;posts&quot;</span><span class="token punctuation">,</span> posts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;/user/home&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>home.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--宏layout.ftl（导航栏 + 页脚）--&gt;
+&lt;#include &quot;/inc/layout.ftl&quot;/&gt;
+
+&lt;#--【三、填充（导航栏 + 页脚）】--&gt;
+&lt;@layout &quot;我的主页&quot;&gt;
+
+    &lt;#--1.用户基本信息--&gt;
+    &lt;div class=&quot;fly-home fly-panel&quot; &gt;
+        &lt;#--头像--&gt;
+        &lt;img src=&quot;${user.avatar}&quot; alt=&quot;贤心&quot;&gt;
+        &lt;i class=&quot;iconfont icon-renzheng&quot; title=&quot;Fly社区认证&quot;&gt;&lt;/i&gt;
+
+        &lt;#--作者信息--&gt;
+        &lt;h1&gt;
+            ${user.username}
+            &lt;i class=&quot;iconfont icon-nan&quot;&gt;&lt;/i&gt;
+            &lt;i class=&quot;layui-badge fly-badge-vip&quot;&gt;SVIP&lt;/i&gt;
+        &lt;/h1&gt;
+
+        &lt;#--创建时间--&gt;
+        &lt;p class=&quot;fly-home-info&quot;&gt;
+            &lt;i class=&quot;iconfont icon-kiss&quot; title=&quot;飞吻&quot;&gt;&lt;/i&gt;&lt;span style=&quot;color: #FF7200;&quot;&gt;66666 飞吻&lt;/span&gt;
+            &lt;i class=&quot;iconfont icon-shijian&quot;&gt;&lt;/i&gt;&lt;span&gt;${timeAgo(user.created)} 加入&lt;/span&gt;
+        &lt;/p&gt;
+
+        &lt;#--个性签名--&gt;
+        &lt;p class=&quot;fly-home-sign&quot;&gt;
+            ${user.sign!'这个人好懒，什么都没留下！'}
+        &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;#--2.最近的提问 + 最近的回答--&gt;
+    &lt;div class=&quot;layui-container&quot;&gt;
+        &lt;div class=&quot;layui-row layui-col-space15&quot;&gt;
+            &lt;#--用户近期【30天】的文章--&gt;
+            &lt;div class=&quot;layui-col-md6 fly-home-jie&quot;&gt;
+                &lt;div class=&quot;fly-panel&quot;&gt;
+                    &lt;h3 class=&quot;fly-panel-title&quot;&gt;${user.username} 最近的提问&lt;/h3&gt;
+                    &lt;ul class=&quot;jie-row&quot;&gt;
+                        &lt;#list posts as post&gt;
+                            &lt;li&gt;
+                                &lt;#if post.recommend&gt;
+                                    &lt;span class=&quot;fly-jing&quot;&gt;精&lt;/span&gt;
+                                &lt;/#if&gt;
+                                &lt;a href=&quot;/post/${post.id}&quot; class=&quot;jie-title&quot;&gt;
+                                    ${post.title}
+                                &lt;/a&gt;
+                                &lt;i&gt;${timeAgo(post.created)}&lt;/i&gt;
+                                &lt;em class=&quot;layui-hide-xs&quot;&gt;
+                                    ${post.viewCount}阅/${post.commentCount}答
+                                &lt;/em&gt;
+                            &lt;/li&gt;
+                        &lt;/#list&gt;
+                        &lt;#if !posts&gt;
+                            &lt;div class=&quot;fly-none&quot; style=&quot;min-height: 50px; padding:30px 0; height:auto;&quot;&gt;
+                                &lt;i style=&quot;font-size:14px;&quot;&gt;没有发表任何求解&lt;/i&gt;
+                            &lt;/div&gt;
+                        &lt;/#if&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;#--最近的回答--&gt;
+            &lt;div class=&quot;layui-col-md6 fly-home-da&quot;&gt;
+                &lt;div class=&quot;fly-panel&quot;&gt;
+                    &lt;h3 class=&quot;fly-panel-title&quot;&gt;${user.username} 最近的回答&lt;/h3&gt;
+                    &lt;ul class=&quot;home-jieda&quot;&gt;
+                        &lt;div class=&quot;fly-none&quot; style=&quot;min-height: 50px; padding:30px 0; height:auto;&quot;&gt;&lt;span&gt;没有回答任何问题&lt;/span&gt;&lt;/div&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        layui.cache.page = 'user';
+    &lt;/script&gt;
+&lt;/@layout&gt;
+</code></pre></div><h2 id="_3-2-个人账户-基本设置-更新资料"><a href="#_3-2-个人账户-基本设置-更新资料" class="header-anchor">#</a> 3.2 个人账户：基本设置-更新资料</h2> <ul><li><code>/res/mods/index.js</code> ：源码可知，【lay-submit】此处默认【表单跳转】reload=&quot;true&quot;，则会【重新加载当前页面】</li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">//表单提交</span>
+form<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'submit(*)'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> action <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>form<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span><span class="token string">'action'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> button <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>elem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    fly<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span>action<span class="token punctuation">,</span> data<span class="token punctuation">.</span>field<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> <span class="token function-variable function">end</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">/*action属性：跳转路径*/</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                location<span class="token punctuation">.</span>href <span class="token operator">=</span> res<span class="token punctuation">.</span>action<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment">/*解决：基本设置 中 修改个人资料后，无法【重新加载】*/</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>button<span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span><span class="token string">'reload'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                location<span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            button<span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span><span class="token string">'alert'</span><span class="token punctuation">)</span> <span class="token operator">?</span> layer<span class="token punctuation">.</span><span class="token function">alert</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>msg<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+                icon<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                time<span class="token operator">:</span> <span class="token number">10</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">,</span>
+                end<span class="token operator">:</span> end
+            <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><ul><li><code>UserController.java</code> ：控制层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 基本设置
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">set</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//用户：从Shiro中获取用户</span>
+        <span class="token class-name">User</span> user <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;user&quot;</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;/user/set&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 基本设置：更新资料
+     */</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">doSet</span><span class="token punctuation">(</span><span class="token class-name">User</span> user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//校验：昵称不能为空</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StrUtil</span><span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token string">&quot;昵称不能为空&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//校验：从数据库中查询【username是否存在】、【id并非当前用户】，如果count &gt; 0，则代表“该昵称已被占用”</span>
+        <span class="token keyword">int</span> count <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;username&quot;</span><span class="token punctuation">,</span> <span class="token function">getProfile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">ne</span><span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">,</span> <span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token string">&quot;该昵称已被占用&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//更新显示【数据库】：username、gender、sign -&gt; 数据库 -&gt; 刷新页面</span>
+        <span class="token class-name">User</span> temp <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        temp<span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        temp<span class="token punctuation">.</span><span class="token function">setGender</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getGender</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        temp<span class="token punctuation">.</span><span class="token function">setSign</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userService<span class="token punctuation">.</span><span class="token function">updateById</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//更新显示【Shiro】：更新 “AccountRealm类中，返回的AccountProfile对象” -&gt; 【header.ftl】</span>
+        <span class="token class-name">AccountProfile</span> profile <span class="token operator">=</span> <span class="token function">getProfile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        profile<span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span>temp<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        profile<span class="token punctuation">.</span><span class="token function">setSign</span><span class="token punctuation">(</span>temp<span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set#info&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>set.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--1.更新资料--&gt;
+&lt;div class=&quot;layui-form layui-form-pane layui-tab-item layui-show&quot;&gt;
+    &lt;form method=&quot;post&quot;&gt;
+        &lt;#--1.1 邮箱--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;label for=&quot;L_email&quot; class=&quot;layui-form-label&quot;&gt;邮箱&lt;/label&gt;
+            &lt;div class=&quot;layui-input-inline&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;L_email&quot; name=&quot;email&quot; required lay-verify=&quot;email&quot;
+                       autocomplete=&quot;off&quot; value=&quot;${user.email}&quot; class=&quot;layui-input&quot; readonly&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;#--1.2 昵称--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;label for=&quot;L_username&quot; class=&quot;layui-form-label&quot;&gt;昵称&lt;/label&gt;
+            &lt;div class=&quot;layui-input-inline&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;L_username&quot; name=&quot;username&quot; required lay-verify=&quot;required&quot;
+                       autocomplete=&quot;off&quot; value=&quot;${user.username}&quot; class=&quot;layui-input&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;layui-inline&quot;&gt;
+                &lt;div class=&quot;layui-input-inline&quot;&gt;
+                    &lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;0&quot; &lt;#if user.gender =='0'&gt;checked&lt;/#if&gt;
+                           title=&quot;男&quot;&gt;
+                    &lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;1&quot; &lt;#if user.gender =='1'&gt;checked&lt;/#if&gt;
+                           title=&quot;女&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;#--1.3 签名--&gt;
+        &lt;div class=&quot;layui-form-item layui-form-text&quot;&gt;
+            &lt;label for=&quot;L_sign&quot; class=&quot;layui-form-label&quot;&gt;签名&lt;/label&gt;
+            &lt;div class=&quot;layui-input-block&quot;&gt;
+                &lt;textarea placeholder=&quot;&quot; id=&quot;L_sign&quot; name=&quot;sign&quot; autocomplete=&quot;off&quot;
+                          class=&quot;layui-textarea&quot; style=&quot;height: 80px;&quot;&gt;${user.sign}&lt;/textarea&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;#--1.4 确定修改--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;#--通过阅读/res/mods/index.js源码可知，【lay-submit】此处默认【表单跳转】reload=&quot;true&quot;，则会【重新加载当前页面】--&gt;
+            &lt;button class=&quot;layui-btn&quot; key=&quot;set-mine&quot; lay-filter=&quot;*&quot; lay-submit reload=&quot;true&quot;
+                    alert=&quot;true&quot;&gt;确认修改
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+</code></pre></div><h2 id="_3-2-个人账户-基本设置-更新头像-上传图片"><a href="#_3-2-个人账户-基本设置-更新头像-上传图片" class="header-anchor">#</a> 3.2 个人账户：基本设置-更新头像（上传图片）</h2> <ul><li><code>application.yml</code> ：配置文件，自定义上传路径</li></ul> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">file</span><span class="token punctuation">:</span>
+  <span class="token key atrule">upload</span><span class="token punctuation">:</span>
+    <span class="token key atrule">dir</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>user.dir<span class="token punctuation">}</span>/upload
+</code></pre></div><ul><li><code>Consts.java</code> ：实体类，上传图片（基本设置）</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * 上传图片（基本设置）：封装类
+ */</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Consts</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">&quot;${file.upload.dir}&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> uploadDir<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Long</span> IM_DEFAULT_USER_ID <span class="token operator">=</span> <span class="token number">999L</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">Long</span> IM_GROUP_ID <span class="token operator">=</span> <span class="token number">999L</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">String</span> IM_GROUP_NAME <span class="token operator">=</span> <span class="token string">&quot;e-group-study&quot;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//消息类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">String</span> IM_MESS_TYPE_PING <span class="token operator">=</span> <span class="token string">&quot;pingMessage&quot;</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">String</span> IM_MESS_TYPE_CHAT <span class="token operator">=</span> <span class="token string">&quot;chatMessage&quot;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> IM_ONLINE_MEMBERS_KEY <span class="token operator">=</span> <span class="token string">&quot;online_members_key&quot;</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> IM_GROUP_HISTROY_MSG_KEY <span class="token operator">=</span> <span class="token string">&quot;group_histroy_msg_key&quot;</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>SpringMvcConfig.java</code> ：配置类，重写父类 addResourceHandlers 方法（识别非静态资源目录：/upload/avatar/**）</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * SpringMvc配置类
+ */</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SpringMvcConfig</span> <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">Consts</span> consts<span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * 重写父类addResourceHandlers方法（识别非静态资源目录：/upload/avatar/**）
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addResourceHandlers</span><span class="token punctuation">(</span><span class="token class-name">ResourceHandlerRegistry</span> registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        registry<span class="token punctuation">.</span><span class="token function">addResourceHandler</span><span class="token punctuation">(</span><span class="token string">&quot;/upload/avatar/**&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">addResourceLocations</span><span class="token punctuation">(</span><span class="token string">&quot;file:///&quot;</span> <span class="token operator">+</span> consts<span class="token punctuation">.</span><span class="token function">getUploadDir</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">&quot;/avatar/&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UploadUtil.java</code> ：工具类，上传图片（基本设置）</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * 上传图片（基本设置）：工具类
+ */</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UploadUtil</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">Consts</span> consts<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">String</span> type_avatar <span class="token operator">=</span> <span class="token string">&quot;avatar&quot;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">upload</span><span class="token punctuation">(</span><span class="token class-name">String</span> type<span class="token punctuation">,</span> <span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StrUtil</span><span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token operator">||</span> file<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token string">&quot;上传失败&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 获取文件名</span>
+        <span class="token class-name">String</span> fileName <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">getOriginalFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;上传的文件名为：&quot;</span> <span class="token operator">+</span> fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 获取文件的后缀名</span>
+        <span class="token class-name">String</span> suffixName <span class="token operator">=</span> fileName<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>fileName<span class="token punctuation">.</span><span class="token function">lastIndexOf</span><span class="token punctuation">(</span><span class="token string">&quot;.&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;上传的后缀名为：&quot;</span> <span class="token operator">+</span> suffixName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 文件上传后的路径</span>
+        <span class="token class-name">String</span> filePath <span class="token operator">=</span> consts<span class="token punctuation">.</span><span class="token function">getUploadDir</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">&quot;avatar&quot;</span><span class="token punctuation">.</span><span class="token function">equalsIgnoreCase</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">AccountProfile</span> profile <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">AccountProfile</span><span class="token punctuation">)</span> <span class="token class-name">SecurityUtils</span><span class="token punctuation">.</span><span class="token function">getSubject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPrincipal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fileName <span class="token operator">=</span> <span class="token string">&quot;/avatar/avatar_&quot;</span> <span class="token operator">+</span> profile<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> suffixName<span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">&quot;post&quot;</span><span class="token punctuation">.</span><span class="token function">equalsIgnoreCase</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            fileName <span class="token operator">=</span> <span class="token string">&quot;/post/post_&quot;</span> <span class="token operator">+</span> <span class="token class-name">DateUtil</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">DatePattern</span><span class="token punctuation">.</span>PURE_DATETIME_MS_PATTERN<span class="token punctuation">)</span> <span class="token operator">+</span> suffixName<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token class-name">File</span> dest <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>filePath <span class="token operator">+</span> fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 检测是否存在目录</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>dest<span class="token punctuation">.</span><span class="token function">getParentFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            dest<span class="token punctuation">.</span><span class="token function">getParentFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mkdirs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            file<span class="token punctuation">.</span><span class="token function">transferTo</span><span class="token punctuation">(</span>dest<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;上传成功后的文件路径为：&quot;</span> <span class="token operator">+</span> filePath <span class="token operator">+</span> fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token class-name">String</span> path <span class="token operator">=</span> filePath <span class="token operator">+</span> fileName<span class="token punctuation">;</span>
+            <span class="token class-name">String</span> url <span class="token operator">=</span> <span class="token string">&quot;/upload&quot;</span> <span class="token operator">+</span> fileName<span class="token punctuation">;</span>
+
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;url ---&gt; {}&quot;</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalStateException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UserController.java</code> ：控制层，上传头像（Post 请求）</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 基本设置：上传头像
+     */</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/upload&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">uploadAvatar</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">&quot;file&quot;</span><span class="token punctuation">)</span> <span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> uploadUtil<span class="token punctuation">.</span><span class="token function">upload</span><span class="token punctuation">(</span><span class="token class-name">UploadUtil</span><span class="token punctuation">.</span>type_avatar<span class="token punctuation">,</span> file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_3-3-个人账户-基本设置-更新头像-更新图片"><a href="#_3-3-个人账户-基本设置-更新头像-更新图片" class="header-anchor">#</a> 3.3 个人账户：基本设置-更新头像（更新图片）</h2> <ul><li><code>/res/mods/user.js</code> ：源码可知，修改默认 <code>Post请求</code> 更新图片路径，从 <code>/user/set</code> 更换为 <code>/user/setAvatar</code></li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">//上传图片</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">$</span><span class="token punctuation">(</span><span class="token string">'.upload-img'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    layui<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">'upload'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">upload</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> avatarAdd <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">'.avatar-add'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        upload<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            elem<span class="token operator">:</span> <span class="token string">'.upload-img'</span>
+            <span class="token punctuation">,</span> url<span class="token operator">:</span> <span class="token string">'/user/upload'</span>
+            <span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">50</span>
+            <span class="token punctuation">,</span> <span class="token function-variable function">before</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                avatarAdd<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'.loading'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token punctuation">,</span> <span class="token function-variable function">done</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment">/*修改默认post更新图片路径，从/user/set更换为/user/setAvatar*/</span>
+                    $<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/user/setAvatar'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+                        avatar<span class="token operator">:</span> res<span class="token punctuation">.</span>data
+                    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        location<span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                    layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>msg<span class="token punctuation">,</span> <span class="token punctuation">{</span>icon<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                avatarAdd<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'.loading'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token punctuation">,</span> <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                avatarAdd<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'.loading'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UserController.java</code> ：控制层，更新头像（Post 请求）</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 基本设置：更新头像
+     */</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/setAvatar&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">doAvatar</span><span class="token punctuation">(</span><span class="token class-name">User</span> user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StrUtil</span><span class="token punctuation">.</span><span class="token function">isNotBlank</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getAvatar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">//更新显示【数据库】：avatar -&gt; 数据库 -&gt; 刷新页面</span>
+            <span class="token class-name">User</span> temp <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            temp<span class="token punctuation">.</span><span class="token function">setAvatar</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getAvatar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            userService<span class="token punctuation">.</span><span class="token function">updateById</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">//更新显示【Shiro】：更新 “AccountRealm类中，返回的AccountProfile对象” -&gt; 【header.ftl】</span>
+            <span class="token class-name">AccountProfile</span> profile <span class="token operator">=</span> <span class="token function">getProfile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            profile<span class="token punctuation">.</span><span class="token function">setAvatar</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getAvatar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set#avatar&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set#avatar&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>set.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--2.更新头像--&gt;
+&lt;div class=&quot;layui-form layui-form-pane layui-tab-item&quot;&gt;
+    &lt;div class=&quot;layui-form-item&quot;&gt;
+        &lt;div class=&quot;avatar-add&quot;&gt;
+            &lt;p&gt;建议尺寸168*168，支持jpg、png、gif，最大不能超过2048KB&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;layui-btn upload-img&quot;&gt;
+                &lt;i class=&quot;layui-icon&quot;&gt;&amp;#xe67c;&lt;/i&gt;上传头像
+            &lt;/button&gt;
+            &lt;#--默认头像--&gt;
+            &lt;img src=&quot;&lt;@shiro.principal property=&quot;avatar&quot; /&gt;&quot;&gt;
+            &lt;span class=&quot;loading&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><h2 id="_3-4-个人账户-基本设置-更新密码"><a href="#_3-4-个人账户-基本设置-更新密码" class="header-anchor">#</a> 3.4 个人账户：基本设置-更新密码</h2> <ul><li><code>UserController.java</code> ：控制层，更新密码</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 基本设置：更新密码
+     */</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/repass&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">repass</span><span class="token punctuation">(</span><span class="token class-name">String</span> nowpass<span class="token punctuation">,</span> <span class="token class-name">String</span> pass<span class="token punctuation">,</span> <span class="token class-name">String</span> repass<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//判断nowpass与pass两次输入是否一致</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>pass<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>repass<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token string">&quot;两次密码不相同&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//判断nowpass是否正确</span>
+        <span class="token class-name">User</span> user <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> nowPassMd5 <span class="token operator">=</span> <span class="token class-name">SecureUtil</span><span class="token punctuation">.</span><span class="token function">md5</span><span class="token punctuation">(</span>nowpass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>nowPassMd5<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getPassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token string">&quot;密码不正确&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//如果nowpass正确，则更新密码</span>
+        user<span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token class-name">SecureUtil</span><span class="token punctuation">.</span><span class="token function">md5</span><span class="token punctuation">(</span>pass<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userService<span class="token punctuation">.</span><span class="token function">updateById</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token string">&quot;/user/set#pass&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>set.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--3.更新密码--&gt;
+&lt;div class=&quot;layui-form layui-form-pane layui-tab-item&quot;&gt;
+    &lt;form action=&quot;/user/repass&quot; method=&quot;post&quot;&gt;
+        &lt;#--3.1 当前密码--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;label for=&quot;L_nowpass&quot; class=&quot;layui-form-label&quot;&gt;当前密码&lt;/label&gt;
+            &lt;div class=&quot;layui-input-inline&quot;&gt;
+                &lt;input type=&quot;password&quot; id=&quot;L_nowpass&quot; name=&quot;nowpass&quot; required lay-verify=&quot;required&quot;
+                       autocomplete=&quot;off&quot; class=&quot;layui-input&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;#--3.2 新密码--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;label for=&quot;L_pass&quot; class=&quot;layui-form-label&quot;&gt;新密码&lt;/label&gt;
+            &lt;div class=&quot;layui-input-inline&quot;&gt;
+                &lt;input type=&quot;password&quot; id=&quot;L_pass&quot; name=&quot;pass&quot; required lay-verify=&quot;required&quot;
+                       autocomplete=&quot;off&quot; class=&quot;layui-input&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;layui-form-mid layui-word-aux&quot;&gt;6到16个字符&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;#--3.3 确定密码--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;label for=&quot;L_repass&quot; class=&quot;layui-form-label&quot;&gt;确认密码&lt;/label&gt;
+            &lt;div class=&quot;layui-input-inline&quot;&gt;
+                &lt;input type=&quot;password&quot; id=&quot;L_repass&quot; name=&quot;repass&quot; required lay-verify=&quot;required&quot;
+                       autocomplete=&quot;off&quot; class=&quot;layui-input&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;#--3.4 确认修改--&gt;
+        &lt;div class=&quot;layui-form-item&quot;&gt;
+            &lt;#--通过阅读/res/mods/index.js源码可知，【lay-submit】此处默认【表单跳转】reload=&quot;true&quot;，则会【重新加载当前页面】--&gt;
+            &lt;button class=&quot;layui-btn&quot; key=&quot;set-mine&quot; lay-filter=&quot;*&quot; lay-submit reload=&quot;true&quot;
+                    alert=&quot;true&quot;&gt;确认修改
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/test/Chapter02/Part02-集成Shiro实现用户登录.html" class="prev">
+        Part02-集成Shiro实现用户登录
+      </a></span> <span class="next"><a href="/test/Chapter02/Part04-集成Shiro实现个人账户-用户中心.html">
+        Part04-集成Shiro实现个人账户-用户中心
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/test/assets/js/app.6710735c.js" defer></script><script src="/test/assets/js/2.5b8d21c8.js" defer></script><script src="/test/assets/js/17.c287f753.js" defer></script>
+  </body>
+</html>

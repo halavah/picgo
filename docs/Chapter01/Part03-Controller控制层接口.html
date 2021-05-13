@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Part03-Controller控制层接口 | Xblog</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/test/logo/favicon.ico">
+    <meta name="description" content="Project documentation">
+    
+    <link rel="preload" href="/test/assets/css/0.styles.1811a760.css" as="style"><link rel="preload" href="/test/assets/js/app.6710735c.js" as="script"><link rel="preload" href="/test/assets/js/2.5b8d21c8.js" as="script"><link rel="preload" href="/test/assets/js/10.16589aca.js" as="script"><link rel="prefetch" href="/test/assets/js/11.ccdd61e4.js"><link rel="prefetch" href="/test/assets/js/12.ea2e7635.js"><link rel="prefetch" href="/test/assets/js/13.2f87eeae.js"><link rel="prefetch" href="/test/assets/js/14.83934acd.js"><link rel="prefetch" href="/test/assets/js/15.80219037.js"><link rel="prefetch" href="/test/assets/js/16.daccab4e.js"><link rel="prefetch" href="/test/assets/js/17.c287f753.js"><link rel="prefetch" href="/test/assets/js/18.01402f92.js"><link rel="prefetch" href="/test/assets/js/19.99769197.js"><link rel="prefetch" href="/test/assets/js/20.b187f33a.js"><link rel="prefetch" href="/test/assets/js/21.e1747b39.js"><link rel="prefetch" href="/test/assets/js/22.ad38be71.js"><link rel="prefetch" href="/test/assets/js/23.17be09d6.js"><link rel="prefetch" href="/test/assets/js/24.c1ad7e7a.js"><link rel="prefetch" href="/test/assets/js/25.50e45c23.js"><link rel="prefetch" href="/test/assets/js/26.d32de95a.js"><link rel="prefetch" href="/test/assets/js/27.4a36609b.js"><link rel="prefetch" href="/test/assets/js/28.d387297e.js"><link rel="prefetch" href="/test/assets/js/3.87e74747.js"><link rel="prefetch" href="/test/assets/js/4.a5623ace.js"><link rel="prefetch" href="/test/assets/js/5.e8fc06c9.js"><link rel="prefetch" href="/test/assets/js/6.91b36dcf.js"><link rel="prefetch" href="/test/assets/js/7.dac76fb7.js"><link rel="prefetch" href="/test/assets/js/8.66dcb99f.js"><link rel="prefetch" href="/test/assets/js/9.bb572502.js">
+    <link rel="stylesheet" href="/test/assets/css/0.styles.1811a760.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/test/" class="home-link router-link-active"><img src="/test/logo/favicon.ico" alt="Xblog" class="logo"> <span class="site-name can-hide">Xblog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/test/" aria-current="page" class="sidebar-link">快速入手</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Chapter01</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test/Chapter01/Part01-博客页面划分.html" class="sidebar-link">Part01-博客页面划分</a></li><li><a href="/test/Chapter01/Part02-MyBatis-Plus的使用.html" class="sidebar-link">Part02-MyBatis-Plus的使用</a></li><li><a href="/test/Chapter01/Part03-Controller控制层接口.html" class="active sidebar-link">Part03-Controller控制层接口</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/test/Chapter01/Part03-Controller控制层接口.html#_3-1-首页" class="sidebar-link">3.1 首页</a></li><li class="sidebar-sub-header"><a href="/test/Chapter01/Part03-Controller控制层接口.html#_3-2-导航栏、文章分类" class="sidebar-link">3.2 导航栏、文章分类</a></li><li class="sidebar-sub-header"><a href="/test/Chapter01/Part03-Controller控制层接口.html#_3-3-文章详情" class="sidebar-link">3.3 文章详情</a></li></ul></li><li><a href="/test/Chapter01/Part04-自定义Freemaker标签.html" class="sidebar-link">Part04-自定义Freemaker标签</a></li><li><a href="/test/Chapter01/Part05-项目启动前加载导航栏.html" class="sidebar-link">Part05-项目启动前加载导航栏</a></li><li><a href="/test/Chapter01/Part06-侧边栏本周热议.html" class="sidebar-link">Part06-侧边栏本周热议</a></li><li><a href="/test/Chapter01/Part07-文章阅读缓存访问量.html" class="sidebar-link">Part07-文章阅读缓存访问量</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter02</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter03</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter04</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="part03-controller控制层接口"><a href="#part03-controller控制层接口" class="header-anchor">#</a> Part03-Controller控制层接口</h1> <div class="language-text extra-class"><pre class="language-text"><code>blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      ContextStartup.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      IndexController.java
+│      │          │      PostController.java
+│      │          │
+│      │          ├─service
+│      │          │  │  postService.java
+│      │          │  │
+│      │          │  └─impl
+│      │          │         postServiceImpl.java
+│      │
+│      └─resources
+│          ├─templates
+│          │  │  index.ftl
+│          │  │
+│          │  ├─inc
+│          │  │     header-panel.ftl
+│          │  │
+│          │  └─post
+│          │        category.ftl
+│          │        detail.ftl
+</code></pre></div><h2 id="_3-1-首页"><a href="#_3-1-首页" class="header-anchor">#</a> 3.1 首页</h2> <ul><li><code>IndexController.java</code> ：控制层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IndexController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * 首页index
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/index&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/index.html&quot;</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">/**
+         * 多条（post实体类、PostVo实体类）：分页集合results
+         */</span>
+        <span class="token comment">//多条：selectPosts(分页信息、分类id、用户id、置顶、精选、排序)</span>
+        <span class="token class-name">IPage</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">PostVo</span><span class="token punctuation">&gt;</span></span> results <span class="token operator">=</span> postService<span class="token punctuation">.</span><span class="token function">selectPosts</span><span class="token punctuation">(</span><span class="token function">getPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">&quot;created&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;postVoDatas&quot;</span><span class="token punctuation">,</span> results<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * 分类（传入id） -&gt; 渲染分类
+         */</span>
+        <span class="token comment">//req：根据传入category表中当前页的id -&gt; 【渲染】分类</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;currentCategoryId&quot;</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;index&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>index.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--宏layout.ftl（导航栏 + 页脚）--&gt;
+&lt;#include &quot;/inc/layout.ftl&quot;/&gt;
+
+&lt;#--【三、填充（导航栏 + 页脚）】--&gt;
+&lt;@layout &quot;首页&quot;&gt;
+
+  &lt;#--【二、分类】--&gt;
+  &lt;#include &quot;/inc/header-panel.ftl&quot;/&gt;
+
+  &lt;#--【三、左侧md8 + 右侧md8】--&gt;
+  &lt;div class=&quot;layui-container&quot;&gt;
+    &lt;div class=&quot;layui-row layui-col-space15&quot;&gt;
+
+      &lt;#--1.左侧md8--&gt;
+      &lt;div class=&quot;layui-col-md8&quot;&gt;
+
+        &lt;#--1.1 fly-panel--&gt;
+        &lt;div class=&quot;fly-panel&quot;&gt;
+          &lt;#--1.1.1 fly-panel-title--&gt;
+          &lt;div class=&quot;fly-panel-title fly-filter&quot;&gt;
+            &lt;a&gt;置顶&lt;/a&gt;
+          &lt;/div&gt;
+          &lt;#--1.1.2 消息列表--&gt;
+          &lt;ul class=&quot;fly-list&quot;&gt;
+              &lt;@details size=2 level=1&gt;
+              &lt;#--1.1.2.1 消息列表--&gt;
+                  &lt;#list results.records as post&gt;
+                      &lt;@plisting post&gt;&lt;/@plisting&gt;
+                  &lt;/#list&gt;
+              &lt;/@details&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;#--1.2 fly-panel--&gt;
+        &lt;div class=&quot;fly-panel&quot; style=&quot;margin-bottom: 0;&quot;&gt;
+          &lt;#--1.2.1 fly-panel-title--&gt;
+          &lt;div class=&quot;fly-panel-title fly-filter&quot;&gt;
+            &lt;a href=&quot;&quot; class=&quot;layui-this&quot;&gt;综合&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;未结&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;已结&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;精华&lt;/a&gt;
+            &lt;span class=&quot;fly-filter-right layui-hide-xs&quot;&gt;
+              &lt;a href=&quot;&quot; class=&quot;layui-this&quot;&gt;按最新&lt;/a&gt;
+              &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+              &lt;a href=&quot;&quot;&gt;按热议&lt;/a&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;#--1.2.2 消息列表--&gt;
+          &lt;div class=&quot;fly-list&quot;&gt;
+              &lt;#list postVoDatas.records as post&gt;
+                  &lt;@plisting post&gt;&lt;/@plisting&gt;
+              &lt;/#list&gt;
+          &lt;/div&gt;
+
+          &lt;#--1.2.3 分页条--&gt;
+          &lt;@paging postVoDatas&gt;&lt;/@paging&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+        &lt;#--2.右侧md4--&gt;
+        &lt;#include &quot;/inc/right.ftl&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/@layout&gt;
+</code></pre></div><h2 id="_3-2-导航栏、文章分类"><a href="#_3-2-导航栏、文章分类" class="header-anchor">#</a> 3.2 导航栏、文章分类</h2> <ul><li><code>ContextStartup.java</code> ：配置类，【向 <code>header-panel.ftl</code> 传入 <code>categorys</code>】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ContextStartup</span> <span class="token keyword">implements</span> <span class="token class-name">ApplicationRunner</span><span class="token punctuation">,</span> <span class="token class-name">ServletContextAware</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">CategoryService</span> categoryService<span class="token punctuation">;</span>
+
+    <span class="token class-name">ServletContext</span> servletContext<span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * 项目启动时，会同时调用该run方法：提前加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">ApplicationArguments</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Category</span><span class="token punctuation">&gt;</span></span> categories <span class="token operator">=</span> categoryService<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Category</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;status&quot;</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        servletContext<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;categorys&quot;</span><span class="token punctuation">,</span> categories<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * servletContext上下文对象
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setServletContext</span><span class="token punctuation">(</span><span class="token class-name">ServletContext</span> servletContext<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>servletContext <span class="token operator">=</span> servletContext<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>PostController.java</code> ：控制类，【向 <code>header-panel.ftl</code> 传入 <code>currentCategoryId</code>】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PostController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 分类category
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/category/{id:\\d*}&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">category</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">&quot;id&quot;</span><span class="token punctuation">)</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">/**
+         * 分类（传入id）-&gt; 渲染分类
+         */</span>
+        <span class="token comment">//req：根据传入category表中当前页的id -&gt; 【渲染】分类</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;currentCategoryId&quot;</span><span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//req：解决使用&lt;@details categoryId=currentCategoryId pn=pn size=2&gt;时，无法传入参数pn的方法：让pn直接从req请求中获取 -&gt; 作为传入posts方法的参数</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;pn&quot;</span><span class="token punctuation">,</span> <span class="token class-name">ServletRequestUtils</span><span class="token punctuation">.</span><span class="token function">getIntParameter</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> <span class="token string">&quot;pn&quot;</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;post/category&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>header-panel.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--【二、分类】--&gt;
+&lt;div class=&quot;fly-panel fly-column&quot;&gt;
+  &lt;div class=&quot;layui-container&quot;&gt;
+    &lt;ul class=&quot;layui-clear&quot;&gt;
+      &lt;!-- 首页 --&gt;
+      &lt;li class=&quot;${(0 == currentCategoryId)?string('layui-hide-xs layui-this', '')}&quot;&gt;&lt;a href=&quot;/&quot;&gt;首页&lt;/a&gt;&lt;/li&gt;
+        &lt;#--提问、分享、讨论、建议--&gt;
+        &lt;#list categorys as item&gt;
+          &lt;li class=&quot;${(item.id == currentCategoryId)?string('layui-hide-xs layui-this', '')}&quot;&gt;
+            &lt;a href=&quot;/category/${item.id}&quot;&gt;${item.name}&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/#list&gt;
+      &lt;li class=&quot;layui-hide-xs layui-hide-sm layui-show-md-inline-block&quot;&gt;&lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;!-- 用户登入后显示 --&gt;
+      &lt;li class=&quot;layui-hide-xs layui-hide-sm layui-show-md-inline-block&quot;&gt;&lt;a href=&quot;/user/index#index&quot;&gt;我发表的贴&lt;/a&gt;&lt;/li&gt;
+      &lt;li class=&quot;layui-hide-xs layui-hide-sm layui-show-md-inline-block&quot;&gt;&lt;a href=&quot;/user/index#collection&quot;&gt;我收藏的贴&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;fly-column-right layui-hide-xs&quot;&gt;
+      &lt;span class=&quot;fly-search&quot;&gt;&lt;i class=&quot;layui-icon&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+      &lt;a href=&quot;post/edit&quot; class=&quot;layui-btn&quot;&gt;发表新帖&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;layui-hide-sm layui-show-xs-block&quot; style=&quot;margin-top: -10px; padding-bottom: 10px; text-align: center;&quot;&gt;
+      &lt;a href=&quot;post/edit&quot; class=&quot;layui-btn&quot;&gt;发表新帖&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><ul><li><code>category.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--宏layout.ftl（导航栏 + 页脚）--&gt;
+&lt;#include &quot;/inc/layout.ftl&quot;/&gt;
+
+&lt;#--【三、填充（导航栏 + 页脚）】--&gt;
+&lt;@layout &quot;博客分类&quot;&gt;
+
+  &lt;#--【二、分类】--&gt;
+  &lt;#include &quot;/inc/header-panel.ftl&quot;/&gt;
+
+  &lt;#--【三、左侧md8 + 右侧md8】--&gt;
+  &lt;div class=&quot;layui-container&quot;&gt;
+    &lt;div class=&quot;layui-row layui-col-space15&quot;&gt;
+
+      &lt;#--1.左侧md8--&gt;
+      &lt;div class=&quot;layui-col-md8&quot;&gt;
+        &lt;#--1.2 fly-panel--&gt;
+        &lt;div class=&quot;fly-panel&quot; style=&quot;margin-bottom: 0;&quot;&gt;
+          &lt;#--1.2.1 fly-panel-title--&gt;
+          &lt;div class=&quot;fly-panel-title fly-filter&quot;&gt;
+            &lt;a href=&quot;&quot; class=&quot;layui-this&quot;&gt;综合&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;未结&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;已结&lt;/a&gt;
+            &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+            &lt;a href=&quot;&quot;&gt;精华&lt;/a&gt;
+            &lt;span class=&quot;fly-filter-right layui-hide-xs&quot;&gt;
+              &lt;a href=&quot;&quot; class=&quot;layui-this&quot;&gt;按最新&lt;/a&gt;
+              &lt;span class=&quot;fly-mid&quot;&gt;&lt;/span&gt;
+              &lt;a href=&quot;&quot;&gt;按热议&lt;/a&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+            &lt;#--1.2.2 消息列表--&gt;
+            &lt;@details categoryId=currentCategoryId pn=pn size=2&gt;
+              &lt;ul class=&quot;fly-list&quot;&gt;
+                &lt;#list results.records as post&gt;
+                  &lt;@plisting post&gt;&lt;/@plisting&gt;
+                &lt;/#list&gt;
+              &lt;/ul&gt;
+                &lt;#--1.2.3 分页条--&gt;
+                &lt;@paging results&gt;&lt;/@paging&gt;
+            &lt;/@details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;#--2.右侧md4--&gt;
+      &lt;#include &quot;/inc/right.ftl&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    layui.cache.page = 'jie';
+  &lt;/script&gt;
+&lt;/@layout&gt;
+</code></pre></div><h2 id="_3-3-文章详情"><a href="#_3-3-文章详情" class="header-anchor">#</a> 3.3 文章详情</h2> <ul><li><code>PostController.java</code> ：控制层，【查看】文章、【查看】评论</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PostController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * 详情detail：【查看】文章、【查看】评论
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/post/{id:\\d*}&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">detail</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">&quot;id&quot;</span><span class="token punctuation">)</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">/**
+         * 一条（post实体类、PostVo实体类）
+         */</span>
+        <span class="token comment">//一条：selectOnePost（表 文章id = 传 文章id），因为Mapper中select信息中，id过多引起歧义，故采用p.id</span>
+        <span class="token class-name">PostVo</span> postVo <span class="token operator">=</span> postService<span class="token punctuation">.</span><span class="token function">selectOnePost</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Post</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;p.id&quot;</span><span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//req：PostVo实体类 -&gt; CategoryId属性</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;currentCategoryId&quot;</span><span class="token punctuation">,</span> postVo<span class="token punctuation">.</span><span class="token function">getCategoryId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//req：PostVo实体类（回调）</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;post&quot;</span><span class="token punctuation">,</span> postVo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * 评论（comment实体类）
+         */</span>
+        <span class="token comment">//评论：page(分页信息、文章id、用户id、排序)</span>
+        <span class="token class-name">IPage</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CommentVo</span><span class="token punctuation">&gt;</span></span> results <span class="token operator">=</span> commentService<span class="token punctuation">.</span><span class="token function">selectComments</span><span class="token punctuation">(</span><span class="token function">getPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> postVo<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">&quot;created&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//req：CommentVo分页集合</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;pageData&quot;</span><span class="token punctuation">,</span> results<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/**
+         * 文章阅读【缓存实现访问量】：减少访问数据库的次数，存在一个BUG，只与点击链接的次数相关，没有与用户的id进行绑定
+         */</span>
+        postService<span class="token punctuation">.</span><span class="token function">putViewCount</span><span class="token punctuation">(</span>postVo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;post/detail&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>detail.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--宏layout.ftl（导航栏 + 页脚）--&gt;
+&lt;#include &quot;/inc/layout.ftl&quot; /&gt;
+
+&lt;#--【三、填充（导航栏 + 页脚）】--&gt;
+&lt;@layout &quot;博客详情&quot;&gt;
+
+  &lt;#--【二、分类】--&gt;
+  &lt;#include &quot;/inc/header-panel.ftl&quot; /&gt;
+
+  &lt;#--【三、左侧md8 + 右侧md8】--&gt;
+  &lt;div class=&quot;layui-container&quot;&gt;
+    &lt;div class=&quot;layui-row layui-col-space15&quot;&gt;
+
+      &lt;#--1.左侧md8--&gt;
+      &lt;div class=&quot;layui-col-md8 content detail&quot;&gt;
+        &lt;#--1.1文章--&gt;
+        &lt;div class=&quot;fly-panel detail-box&quot;&gt;
+          &lt;#--1.1.1 文章标题--&gt;
+          &lt;h1&gt;${post.title}&lt;/h1&gt;
+
+          &lt;#--1.1.2 文章标签--&gt;
+          &lt;div class=&quot;fly-detail-info&quot;&gt;
+            &lt;span class=&quot;layui-badge layui-bg-green fly-detail-column&quot;&gt;${post.categoryName}&lt;/span&gt;
+
+            &lt;#if post.level gt 0&gt;&lt;span class=&quot;layui-badge layui-bg-black&quot;&gt;置顶&lt;/span&gt;&lt;/#if&gt;
+            &lt;#if post.recommend&gt;&lt;span class=&quot;layui-badge layui-bg-red&quot;&gt;精帖&lt;/span&gt;&lt;/#if&gt;
+
+            &lt;div class=&quot;fly-admin-box&quot; data-id=&quot;${post.id}&quot;&gt;
+                &lt;#--发布者删除--&gt;
+                &lt;#if post.userId == profile.id  &amp;&amp;  profile.id != 1&gt;
+                  &lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;del&quot;&gt;删除&lt;/span&gt;
+                &lt;/#if&gt;
+
+                &lt;#--管理员操作--&gt;
+                &lt;@shiro.hasRole name=&quot;admin&quot;&gt;
+                  &lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;set&quot; field=&quot;delete&quot; rank=&quot;1&quot; reload=&quot;true&quot; &gt;删除&lt;/span&gt;
+                    &lt;#if post.level == 0&gt;&lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;set&quot; field=&quot;stick&quot; rank=&quot;1&quot;&gt;置顶&lt;/span&gt;&lt;/#if&gt;
+                    &lt;#if post.level gt 0&gt;&lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;set&quot; field=&quot;stick&quot; rank=&quot;0&quot; style=&quot;background-color:#ccc;&quot;&gt;取消置顶&lt;/span&gt;&lt;/#if&gt;
+                    &lt;#if !post.recommend&gt;&lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;set&quot; field=&quot;status&quot; rank=&quot;1&quot;&gt;加精&lt;/span&gt;&lt;/#if&gt;
+                    &lt;#if post.recommend&gt;&lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;set&quot; field=&quot;status&quot; rank=&quot;0&quot; style=&quot;background-color:#ccc;&quot;&gt;取消加精&lt;/span&gt;&lt;/#if&gt;
+                &lt;/@shiro.hasRole&gt;
+            &lt;/div&gt;
+
+            &lt;span class=&quot;fly-list-nums&quot;&gt;
+              &lt;a href=&quot;#comment&quot;&gt;&lt;i class=&quot;iconfont&quot; title=&quot;回答&quot;&gt;&amp;#xe60c;&lt;/i&gt;${post.commentCount}&lt;/a&gt;
+              &lt;i class=&quot;iconfont&quot; title=&quot;人气&quot;&gt;&amp;#xe60b;&lt;/i&gt;${post.viewCount}
+            &lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;#--1.1.3 文章作者信息--&gt;
+          &lt;div class=&quot;detail-about&quot;&gt;
+            &lt;a class=&quot;fly-avatar&quot; href=&quot;/user/${post.authorId}&quot;&gt;
+              &lt;img src=&quot;${post.authorAvatar}&quot; alt=&quot;${post.authorName}&quot;&gt;
+            &lt;/a&gt;
+            &lt;div class=&quot;fly-detail-user&quot;&gt;
+              &lt;a href=&quot;/user/${post.authorId}&quot; class=&quot;fly-link&quot;&gt;
+                &lt;cite&gt;${post.authorName}&lt;/cite&gt;
+              &lt;/a&gt;
+              &lt;span&gt;${timeAgo(post.created)}&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;detail-hits&quot; id=&quot;LAY_jieAdmin&quot; data-id=&quot;${post.id}&quot;&gt;
+              &lt;#--登录状态下，用户id = 作者id，才能进行【编辑文章】--&gt;
+              &lt;#if profile.id == post.userId&gt;
+                &lt;span class=&quot;layui-btn layui-btn-xs jie-admin&quot; type=&quot;edit&quot;&gt;
+                  &lt;a href=&quot;/post/edit?id=${post.id}&quot;&gt;编辑此贴&lt;/a&gt;
+                &lt;/span&gt;
+              &lt;/#if&gt;
+              &lt;#--未登录状态下，【缺少span块引起的显示问题】，作用：空占位，美化样式--&gt;
+              &lt;span class=&quot;jie-admin&quot; type=&quot;&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;#--1.1.4 文章内容--&gt;
+          &lt;div class=&quot;detail-body photos&quot;&gt;
+              ${post.content}
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;#--1.2 评论--&gt;
+        &lt;div class=&quot;fly-panel detail-box&quot; id=&quot;flyReply&quot;&gt;
+          &lt;#--1.2.1 回帖线--&gt;
+          &lt;fieldset class=&quot;layui-elem-field layui-field-title&quot; style=&quot;text-align: center;&quot;&gt;
+            &lt;legend&gt;回帖&lt;/legend&gt;
+          &lt;/fieldset&gt;
+
+          &lt;#--1.2.2 评论区--&gt;
+          &lt;ul class=&quot;jieda&quot; id=&quot;jieda&quot;&gt;
+            &lt;#list pageData.records as comment&gt;
+              &lt;li data-id=&quot;${comment.id}&quot; class=&quot;jieda-daan&quot;&gt;
+                &lt;a name=&quot;item-${comment.id}&quot;&gt;&lt;/a&gt;
+                &lt;div class=&quot;detail-about detail-about-reply&quot;&gt;
+                  &lt;a class=&quot;fly-avatar&quot; href=&quot;/user/${post.authorId}&quot;&gt;
+                    &lt;img src=&quot;${comment.authorAvatar}&quot; alt=&quot;${comment.authorName}&quot;&gt;
+                  &lt;/a&gt;
+                  &lt;div class=&quot;fly-detail-user&quot;&gt;
+                    &lt;a href=&quot;/user/${comment.authorId}&quot; class=&quot;fly-link&quot;&gt;
+                      &lt;cite&gt;${comment.authorName}&lt;/cite&gt;
+                    &lt;/a&gt;
+                    &lt;#if comment.user_id == post.user_id&gt;
+                      &lt;span&gt;(楼主)&lt;/span&gt;
+                    &lt;/#if&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;detail-hits&quot;&gt;
+                    &lt;span&gt;${timeAgo(comment.created)}&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;detail-body jieda-body photos&quot;&gt;
+                  ${comment.content}
+                &lt;/div&gt;
+                &lt;div class=&quot;jieda-reply&quot;&gt;
+                    &lt;span class=&quot;jieda-zan zanok&quot; type=&quot;zan&quot;&gt;
+                      &lt;i class=&quot;iconfont icon-zan&quot;&gt;&lt;/i&gt;
+                      &lt;em&gt;${comment.voteUp}&lt;/em&gt;
+                    &lt;/span&gt;
+                  &lt;span type=&quot;reply&quot;&gt;
+                      &lt;i class=&quot;iconfont icon-svgmoban53&quot;&gt;&lt;/i&gt;
+                      回复
+                    &lt;/span&gt;
+                  &lt;div class=&quot;jieda-admin&quot;&gt;
+                    &lt;span type=&quot;del&quot;&gt;删除&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+            &lt;/#list&gt;
+          &lt;/ul&gt;
+
+          &lt;#--1.2.3 评论分页--&gt;
+          &lt;@paging pageData&gt;&lt;/@paging&gt;
+
+          &lt;#--1.2.4 回复区--&gt;
+          &lt;div class=&quot;layui-form layui-form-pane&quot;&gt;
+            &lt;form action=&quot;/post/reply/&quot; method=&quot;post&quot;&gt;
+              &lt;div class=&quot;layui-form-item layui-form-text&quot;&gt;
+                &lt;a name=&quot;comment&quot;&gt;&lt;/a&gt;
+                &lt;div class=&quot;layui-input-block&quot;&gt;
+                  &lt;textarea id=&quot;L_content&quot; name=&quot;content&quot; required lay-verify=&quot;required&quot;
+                            placeholder=&quot;请输入内容&quot; class=&quot;layui-textarea fly-editor&quot;
+                            style=&quot;height: 150px;&quot;&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;layui-form-item&quot;&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;jid&quot; value=&quot;${post.id}&quot;&gt;
+                &lt;button class=&quot;layui-btn&quot; lay-filter=&quot;*&quot; lay-submit&gt;提交回复&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;#--2.右侧md4--&gt;
+      &lt;#include &quot;/inc/right.ftl&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    layui.cache.page = 'jie';
+  &lt;/script&gt;
+
+&lt;/@layout&gt;
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/test/Chapter01/Part02-MyBatis-Plus的使用.html" class="prev">
+        Part02-MyBatis-Plus的使用
+      </a></span> <span class="next"><a href="/test/Chapter01/Part04-自定义Freemaker标签.html">
+        Part04-自定义Freemaker标签
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/test/assets/js/app.6710735c.js" defer></script><script src="/test/assets/js/2.5b8d21c8.js" defer></script><script src="/test/assets/js/10.16589aca.js" defer></script>
+  </body>
+</html>

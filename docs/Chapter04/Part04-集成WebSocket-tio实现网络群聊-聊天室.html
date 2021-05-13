@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Part04-集成WebSocket-tio实现网络群聊-聊天室 | Xblog</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/test/logo/favicon.ico">
+    <meta name="description" content="Project documentation">
+    
+    <link rel="preload" href="/test/assets/css/0.styles.1811a760.css" as="style"><link rel="preload" href="/test/assets/js/app.6710735c.js" as="script"><link rel="preload" href="/test/assets/js/2.5b8d21c8.js" as="script"><link rel="preload" href="/test/assets/js/27.4a36609b.js" as="script"><link rel="prefetch" href="/test/assets/js/10.16589aca.js"><link rel="prefetch" href="/test/assets/js/11.ccdd61e4.js"><link rel="prefetch" href="/test/assets/js/12.ea2e7635.js"><link rel="prefetch" href="/test/assets/js/13.2f87eeae.js"><link rel="prefetch" href="/test/assets/js/14.83934acd.js"><link rel="prefetch" href="/test/assets/js/15.80219037.js"><link rel="prefetch" href="/test/assets/js/16.daccab4e.js"><link rel="prefetch" href="/test/assets/js/17.c287f753.js"><link rel="prefetch" href="/test/assets/js/18.01402f92.js"><link rel="prefetch" href="/test/assets/js/19.99769197.js"><link rel="prefetch" href="/test/assets/js/20.b187f33a.js"><link rel="prefetch" href="/test/assets/js/21.e1747b39.js"><link rel="prefetch" href="/test/assets/js/22.ad38be71.js"><link rel="prefetch" href="/test/assets/js/23.17be09d6.js"><link rel="prefetch" href="/test/assets/js/24.c1ad7e7a.js"><link rel="prefetch" href="/test/assets/js/25.50e45c23.js"><link rel="prefetch" href="/test/assets/js/26.d32de95a.js"><link rel="prefetch" href="/test/assets/js/28.d387297e.js"><link rel="prefetch" href="/test/assets/js/3.87e74747.js"><link rel="prefetch" href="/test/assets/js/4.a5623ace.js"><link rel="prefetch" href="/test/assets/js/5.e8fc06c9.js"><link rel="prefetch" href="/test/assets/js/6.91b36dcf.js"><link rel="prefetch" href="/test/assets/js/7.dac76fb7.js"><link rel="prefetch" href="/test/assets/js/8.66dcb99f.js"><link rel="prefetch" href="/test/assets/js/9.bb572502.js">
+    <link rel="stylesheet" href="/test/assets/css/0.styles.1811a760.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/test/" class="home-link router-link-active"><img src="/test/logo/favicon.ico" alt="Xblog" class="logo"> <span class="site-name can-hide">Xblog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/halavah/blog/tree/master/xblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.tk" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/test/" aria-current="page" class="sidebar-link">快速入手</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter01</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter02</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter03</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Chapter04</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html" class="sidebar-link">Part01-集成WeSocket实现用户评论-即时通讯</a></li><li><a href="/test/Chapter04/Part02-集成Elasticsearch实现文章内容-搜索引擎.html" class="sidebar-link">Part02-集成Elasticsearch实现文章内容-搜索引擎</a></li><li><a href="/test/Chapter04/Part03-集成RabbitMQ保证ES随文章增删改查-实时更新.html" class="sidebar-link">Part03-集成RabbitMQ保证ES随文章增删改查-实时更新</a></li><li><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html" class="active sidebar-link">Part04-集成WebSocket-tio实现网络群聊-聊天室</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html#_4-1-集成-websocket-tio-环境" class="sidebar-link">4.1 集成 WebSocket-tio 环境</a></li><li class="sidebar-sub-header"><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html#_4-2-配置-websocket-tio-环境" class="sidebar-link">4.2 配置 WebSocket-tio 环境</a></li><li class="sidebar-sub-header"><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html#_4-3-使用-websocket-tio-环境" class="sidebar-link">4.3 使用 WebSocket-tio 环境</a></li><li class="sidebar-sub-header"><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html#_4-3-编写-chat-js、im-js-文件" class="sidebar-link">4.3 编写 chat.js、im.js 文件</a></li><li class="sidebar-sub-header"><a href="/test/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html#_4-4-使用-chat-js、im-js-文件" class="sidebar-link">4.4 使用 chat.js、im.js 文件</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="part04-集成websocket-tio实现网络群聊-聊天室"><a href="#part04-集成websocket-tio实现网络群聊-聊天室" class="header-anchor">#</a> Part04-集成WebSocket-tio实现网络群聊-聊天室</h1> <div class="language-text extra-class"><pre class="language-text"><code>blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      ImServerConfig.java  # 执行入口类
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      ChatController.java
+│      │          │
+│      │          ├─service
+│      │          │  │  ChatService.java
+│      │          │  │
+│      │          │  └─impl
+│      │          │          ChatServiceImpl.java
+│      │          │
+│      │          ├─utils
+│      │          │      SpringUtil.java
+│      │          │
+│      │          └─im
+│      │             ├─handler  # 处理【接受字符类型消息：Chat类型、Ping类型】
+│      │             │  │  MsgHandler.java
+│      │             │  │  MsgHandlerFactory.java
+│      │             │  │
+│      │             │  ├─filter
+│      │             │  │      ExculdeMineChannelContextFilter.java
+│      │             │  │
+│      │             │  └─impl
+│      │             │          ChatMsgHandler.java
+│      │             │          PingMsgHandler.java
+│      │             │
+│      │             ├─message
+│      │             │      ChatImMess.java
+│      │             │      ChatOutMess.java
+│      │             │
+│      │             ├─server
+│      │             │      ImServerStarter.java  # 1.启动tio服务（绑定端口），并调用-消息处理器
+│      │             │      ImWsMsgHandler.java   # 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型
+│      │             │
+│      │             └─vo
+│      │                     ImMess.java
+│      │                     ImTo.java
+│      │                     ImUser.java
+│      │
+│      └─resources
+│          │  application.yml
+│          │
+│          ├─static
+│          │  └─res
+│          │      ├─js  # 自己编写 js 文件
+│          │      │      chat.js
+│          │      │      im.js
+│          │      │
+│          │      ├─layui   # 引入的 js 文件
+│          │         │
+│          │         ├─css
+│          │         │  │  layui.css
+│          │         │  │  layui.mobile.css
+│          │         │  │
+│          │         │  └─modules
+│          │         │      │
+│          │         │      └─layim
+│          │         │          │  layim.css
+│          │         │          │
+│          │         │          ├─html
+│          │         │          │      chatlog.html
+│          │         │          │      find.html
+│          │         │          │      getmsg.json
+│          │         │          │      msgbox.html
+│          │         │          │
+│          │         │          ├─mobile
+│          │         │          │      layim.css
+│          │         │          │
+│          │         │          ├─skin
+│          │         │          │      1.jpg
+│          │         │          │      2.jpg
+│          │         │          │      3.jpg
+│          │         │          │      4.jpg
+│          │         │          │      5.jpg
+│          │         │          │      logo.jpg
+│          │         │          │
+│          │         │          └─voice
+│          │         │                  default.mp3
+│          │         │                  default.wav
+│          │         │
+│          │         └─lay
+│          │             └─modules
+│          │                    │  layim.js
+│          │
+│          ├─templates
+│          │  └─inc
+│          │         layout.ftl
+</code></pre></div><h2 id="_4-1-集成-websocket-tio-环境"><a href="#_4-1-集成-websocket-tio-环境" class="header-anchor">#</a> 4.1 集成 WebSocket-tio 环境</h2> <ul><li><code>pom.xml</code> ：项目依赖，【tio：网络群聊】</li></ul> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">&gt;</span></span>
+  <span class="token comment">&lt;!--websocket-tio：网络群聊--&gt;</span>
+  <span class="token comment">&lt;!--参考：https://www.layui.com/layim/--&gt;</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.t-io<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>tio-websocket-server<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>3.2.5.v20190101-RELEASE<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><ul><li><code>static/res/layui/lay/modules/layim.js</code> ：js文件，【拷贝 <code>layim.js</code> -&gt; <code>static/res/layui/lay/modules/</code>】</li> <li><code>static/res/layui/css/modules/layim/...</code> ：css文件，【拷贝 <code>layim/...</code> -&gt; <code>static/res/layui/css/modules/</code>】</li></ul> <h2 id="_4-2-配置-websocket-tio-环境"><a href="#_4-2-配置-websocket-tio-环境" class="header-anchor">#</a> 4.2 配置 WebSocket-tio 环境</h2> <ul><li><code>application.yml</code> ：配置文件</li></ul> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">im</span><span class="token punctuation">:</span>
+  <span class="token key atrule">server</span><span class="token punctuation">:</span>
+    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9326</span>
+</code></pre></div><ul><li><code>ImServerConfig.java</code> ：配置类，【执行入口类】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * 执行入口类 -&gt; 1.启动tio服务（绑定端口），并调用-消息处理器
+ *          -&gt; 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
+ */</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ImServerConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">&quot;${im.server.port}&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> imPort<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token class-name">ImServerStarter</span> <span class="token function">imServerStarter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 启动tio服务（绑定端口）</span>
+            <span class="token class-name">ImServerStarter</span> serverStarter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImServerStarter</span><span class="token punctuation">(</span>imPort<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            serverStarter<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 初始化消息处理器类别</span>
+            <span class="token class-name">MsgHandlerFactory</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> serverStarter<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&quot;tio server 启动失败&quot;</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>ImServerStarter.java</code> ：配置类，【1.启动tio服务（绑定端口），并调用-消息处理器】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * 1.启动tio服务（绑定端口），并调用-消息处理器
+ */</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ImServerStarter</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">//返回全局变量：使用websocket-tio包中的ImServerStarter【org.tio.websocket.server.WsServerStarter】</span>
+    <span class="token keyword">private</span> <span class="token class-name">WsServerStarter</span> starter<span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * 构造方法：启动tio服务（绑定端口）
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">ImServerStarter</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">//调用【消息处理器】</span>
+        <span class="token class-name">IWsMsgHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImWsMsgHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        starter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WsServerStarter</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//可选【在上下文对象中，设置心跳时间】</span>
+        <span class="token class-name">ServerGroupContext</span> serverGroupContext <span class="token operator">=</span> starter<span class="token punctuation">.</span><span class="token function">getServerGroupContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        serverGroupContext<span class="token punctuation">.</span><span class="token function">setHeartbeatTimeout</span><span class="token punctuation">(</span><span class="token number">50000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 初始化消息处理器类别
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        starter<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;tio server start !!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>ImWsMsgHandler.java</code> ：配置类，【2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
+ */</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ImWsMsgHandler</span> <span class="token keyword">implements</span> <span class="token class-name">IWsMsgHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * 握手时候走的方法
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">HttpResponse</span> <span class="token function">handshake</span><span class="token punctuation">(</span><span class="token class-name">HttpRequest</span> httpRequest<span class="token punctuation">,</span> <span class="token class-name">HttpResponse</span> httpResponse<span class="token punctuation">,</span> <span class="token class-name">ChannelContext</span> channelContext<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+
+        <span class="token comment">// 绑定个人通道</span>
+        <span class="token class-name">String</span> userId <span class="token operator">=</span> httpRequest<span class="token punctuation">.</span><span class="token function">getParam</span><span class="token punctuation">(</span><span class="token string">&quot;userId&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;{} --------------&gt; 正在握手！&quot;</span><span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Tio</span><span class="token punctuation">.</span><span class="token function">bindUser</span><span class="token punctuation">(</span>channelContext<span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> httpResponse<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 握手完成之后
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAfterHandshaked</span><span class="token punctuation">(</span><span class="token class-name">HttpRequest</span> httpRequest<span class="token punctuation">,</span> <span class="token class-name">HttpResponse</span> httpResponse<span class="token punctuation">,</span> <span class="token class-name">ChannelContext</span> channelContext<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+
+        <span class="token comment">// 绑定群聊通道，群名称叫做：e-group-study</span>
+        <span class="token class-name">Tio</span><span class="token punctuation">.</span><span class="token function">bindGroup</span><span class="token punctuation">(</span>channelContext<span class="token punctuation">,</span> <span class="token class-name">Consts</span><span class="token punctuation">.</span>IM_GROUP_NAME<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;{} --------------&gt; 已绑定群！&quot;</span><span class="token punctuation">,</span> channelContext<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 接受字节类型消息
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">onBytes</span><span class="token punctuation">(</span><span class="token class-name">WsRequest</span> wsRequest<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">,</span> <span class="token class-name">ChannelContext</span> channelContext<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 接受字符类型消息
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">onText</span><span class="token punctuation">(</span><span class="token class-name">WsRequest</span> wsRequest<span class="token punctuation">,</span> <span class="token class-name">String</span> text<span class="token punctuation">,</span> <span class="token class-name">ChannelContext</span> channelContext<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>text <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> text<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">&quot;ping&quot;</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&quot;接收到信息——————————————————&gt;{}&quot;</span><span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token class-name">Map</span> map <span class="token operator">=</span> <span class="token class-name">JSONUtil</span><span class="token punctuation">.</span><span class="token function">toBean</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> type <span class="token operator">=</span> <span class="token class-name">MapUtil</span><span class="token punctuation">.</span><span class="token function">getStr</span><span class="token punctuation">(</span>map<span class="token punctuation">,</span> <span class="token string">&quot;type&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> data <span class="token operator">=</span> <span class="token class-name">MapUtil</span><span class="token punctuation">.</span><span class="token function">getStr</span><span class="token punctuation">(</span>map<span class="token punctuation">,</span> <span class="token string">&quot;data&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//处理消息</span>
+        <span class="token class-name">MsgHandler</span> handler <span class="token operator">=</span> <span class="token class-name">MsgHandlerFactory</span><span class="token punctuation">.</span><span class="token function">getMsgHandler</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        handler<span class="token punctuation">.</span><span class="token function">handler</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> wsRequest<span class="token punctuation">,</span> channelContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * 链接关闭时候方法
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">onClose</span><span class="token punctuation">(</span><span class="token class-name">WsRequest</span> wsRequest<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">,</span> <span class="token class-name">ChannelContext</span> channelContext<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_4-3-使用-websocket-tio-环境"><a href="#_4-3-使用-websocket-tio-环境" class="header-anchor">#</a> 4.3 使用 WebSocket-tio 环境</h2> <ul><li><code>ChatController.java</code> ：控制层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/chat&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ChatController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/getMineAndGroupData&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">getMineAndGroupData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//默认群</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> group <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        group<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;社区群聊&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        group<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;type&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;group&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        group<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;avatar&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;http://tp1.sinaimg.cn/5619439268/180/40030060651/1&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        group<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">,</span> <span class="token class-name">Consts</span><span class="token punctuation">.</span>IM_GROUP_ID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        group<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;members&quot;</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">ImUser</span> user <span class="token operator">=</span> chatService<span class="token punctuation">.</span><span class="token function">getCurrentUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token class-name">MapUtil</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;group&quot;</span><span class="token punctuation">,</span> group<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">&quot;mine&quot;</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/getGroupHistoryMsg&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">getGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> messages <span class="token operator">=</span> chatService<span class="token punctuation">.</span><span class="token function">getGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>messages<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>ChatService.java</code> ：业务层接口</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ChatService</span> <span class="token punctuation">{</span>
+    <span class="token class-name">ImUser</span> <span class="token function">getCurrentUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">void</span> <span class="token function">setGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token class-name">ImMess</span> responseMess<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> <span class="token function">getGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>ChatServiceImpl.java</code> ：业务层实现</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">&quot;chatService&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ChatServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">ChatService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RedisUtil</span> redisUtil<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">ImUser</span> <span class="token function">getCurrentUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">AccountProfile</span> profile <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">AccountProfile</span><span class="token punctuation">)</span> <span class="token class-name">SecurityUtils</span><span class="token punctuation">.</span><span class="token function">getSubject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPrincipal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">ImUser</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span><span class="token punctuation">(</span>profile <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            user<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span>profile<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setAvatar</span><span class="token punctuation">(</span>profile<span class="token punctuation">.</span><span class="token function">getAvatar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span>profile<span class="token punctuation">.</span><span class="token function">getUsername</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setStatus</span><span class="token punctuation">(</span><span class="token class-name">ImUser</span><span class="token punctuation">.</span>ONLINE_STATUS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            user<span class="token punctuation">.</span><span class="token function">setAvatar</span><span class="token punctuation">(</span><span class="token string">&quot;http://tp1.sinaimg.cn/5619439268/180/40030060651/1&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 匿名用户处理</span>
+            <span class="token class-name">Long</span> imUserId <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Long</span><span class="token punctuation">)</span> <span class="token class-name">SecurityUtils</span><span class="token punctuation">.</span><span class="token function">getSubject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;imUserId&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span>imUserId <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">?</span> imUserId <span class="token operator">:</span> <span class="token class-name">RandomUtil</span><span class="token punctuation">.</span><span class="token function">randomLong</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token class-name">SecurityUtils</span><span class="token punctuation">.</span><span class="token function">getSubject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;imUserId&quot;</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            user<span class="token punctuation">.</span><span class="token function">setSign</span><span class="token punctuation">(</span><span class="token string">&quot;never give up!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span><span class="token string">&quot;匿名用户&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            user<span class="token punctuation">.</span><span class="token function">setStatus</span><span class="token punctuation">(</span><span class="token class-name">ImUser</span><span class="token punctuation">.</span>ONLINE_STATUS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token class-name">ImMess</span> imMess<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        redisUtil<span class="token punctuation">.</span><span class="token function">lSet</span><span class="token punctuation">(</span><span class="token class-name">Consts</span><span class="token punctuation">.</span>IM_GROUP_HISTROY_MSG_KEY<span class="token punctuation">,</span> imMess<span class="token punctuation">,</span> <span class="token number">24</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> <span class="token function">getGroupHistoryMsg</span><span class="token punctuation">(</span><span class="token keyword">int</span> count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> length <span class="token operator">=</span> redisUtil<span class="token punctuation">.</span><span class="token function">lGetListSize</span><span class="token punctuation">(</span><span class="token class-name">Consts</span><span class="token punctuation">.</span>IM_GROUP_HISTROY_MSG_KEY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> redisUtil<span class="token punctuation">.</span><span class="token function">lGet</span><span class="token punctuation">(</span><span class="token class-name">Consts</span><span class="token punctuation">.</span>IM_GROUP_HISTROY_MSG_KEY<span class="token punctuation">,</span> length <span class="token operator">-</span> count <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> length <span class="token operator">-</span> count<span class="token punctuation">,</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_4-3-编写-chat-js、im-js-文件"><a href="#_4-3-编写-chat-js、im-js-文件" class="header-anchor">#</a> 4.3 编写 chat.js、im.js 文件</h2> <ul><li><code>chat.js</code> ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】</li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">/**
+ * layim 聊天窗口（chat.js 调用 im.js 方法）
+ */</span>
+layui<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">'layim'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">layim</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">var</span> $ <span class="token operator">=</span> layui<span class="token punctuation">.</span>jquery<span class="token punctuation">;</span>
+  layim<span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    brief<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">//是否简约模式（如果true则不显示主面板）</span>
+    <span class="token punctuation">,</span> voice<span class="token operator">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">,</span> chatLog<span class="token operator">:</span> layui<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>dir <span class="token operator">+</span> <span class="token string">'css/modules/layim/html/chatlog.html'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> tiows <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">tio<span class="token punctuation">.</span>ws</span><span class="token punctuation">(</span>$<span class="token punctuation">,</span> layim<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//1.【获取个人、群聊信息】 + 【打开聊天窗口】</span>
+  tiows<span class="token punctuation">.</span><span class="token function">openChatWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//2.【查看历史聊天记录 - 回显】</span>
+  tiows<span class="token punctuation">.</span><span class="token function">initHistoryMess</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//3.【使用websocket建立连接】</span>
+  tiows<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//4.【发送消息】</span>
+  layim<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'sendMessage'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    tiows<span class="token punctuation">.</span><span class="token function">sendChatMessage</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><ul><li><code>im.js</code> ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】</li></ul> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">/**
+ * layim 聊天窗口（chat.js 调用 im.js 方法）
+ */</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token punctuation">(</span>tio<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">&quot;undefined&quot;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  tio <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+tio<span class="token punctuation">.</span>ws <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+tio<span class="token punctuation">.</span><span class="token function-variable function">ws</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">$<span class="token punctuation">,</span> layim</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>heartbeatTimeout <span class="token operator">=</span> <span class="token number">5000</span><span class="token punctuation">;</span> <span class="token comment">// 心跳超时时间，单位：毫秒</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>heartbeatSendInterval <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>heartbeatTimeout <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//【使用websocket建立连接】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">connect</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> url <span class="token operator">=</span> <span class="token string">&quot;ws://127.0.0.1:9326?userId=&quot;</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>userId<span class="token punctuation">;</span>
+    <span class="token keyword">var</span> socket <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebSocket</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    self<span class="token punctuation">.</span>socket <span class="token operator">=</span> socket<span class="token punctuation">;</span>
+
+    socket<span class="token punctuation">.</span><span class="token function-variable function">onopen</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;tio ws 启动~&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      self<span class="token punctuation">.</span><span class="token function">lastInteractionTime</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">//建立心跳</span>
+      self<span class="token punctuation">.</span><span class="token function">ping</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    socket<span class="token punctuation">.</span><span class="token function-variable function">onclose</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;tio ws 关闭~&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">//尝试重连</span>
+      self<span class="token punctuation">.</span><span class="token function">reconn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    socket<span class="token punctuation">.</span><span class="token function-variable function">onmessage</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;接收到消息！！&quot;</span><span class="token punctuation">)</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+
+      <span class="token keyword">var</span> msgBody <span class="token operator">=</span> <span class="token function">eval</span><span class="token punctuation">(</span><span class="token string">'('</span> <span class="token operator">+</span> res<span class="token punctuation">.</span>data <span class="token operator">+</span> <span class="token string">')'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>msgBody<span class="token punctuation">.</span>emit <span class="token operator">===</span> <span class="token string">'chatMessage'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        layim<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span>msgBody<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      self<span class="token punctuation">.</span><span class="token function">lastInteractionTime</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//【获取个人、群聊信息】 + 【打开聊天窗口】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">openChatWindow</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 获取个人信息</span>
+    $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      url<span class="token operator">:</span> <span class="token string">&quot;/chat/getMineAndGroupData&quot;</span><span class="token punctuation">,</span>
+      async<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        self<span class="token punctuation">.</span>group <span class="token operator">=</span> res<span class="token punctuation">.</span>data<span class="token punctuation">.</span>group<span class="token punctuation">;</span>
+        self<span class="token punctuation">.</span>mine <span class="token operator">=</span> res<span class="token punctuation">.</span>data<span class="token punctuation">.</span>mine<span class="token punctuation">;</span>
+        self<span class="token punctuation">.</span>userId <span class="token operator">=</span> self<span class="token punctuation">.</span>mine<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>group<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>mine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> cache <span class="token operator">=</span> layui<span class="token punctuation">.</span>layim<span class="token punctuation">.</span><span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cache<span class="token punctuation">.</span>mine <span class="token operator">=</span> self<span class="token punctuation">.</span>mine<span class="token punctuation">;</span>
+
+    <span class="token comment">// 打开窗口</span>
+    layim<span class="token punctuation">.</span><span class="token function">chat</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>group<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    layim<span class="token punctuation">.</span><span class="token function">setChatMin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//收缩聊天面板</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//【发送消息】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">sendChatMessage</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    self<span class="token punctuation">.</span>socket<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      type<span class="token operator">:</span> <span class="token string">'chatMessage'</span>
+      <span class="token punctuation">,</span>data<span class="token operator">:</span> res
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">//【查看历史聊天记录 - 回显】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">initHistoryMess</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    localStorage<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      url<span class="token operator">:</span> <span class="token string">'/chat/getGroupHistoryMsg'</span><span class="token punctuation">,</span>
+      <span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> data <span class="token operator">=</span> res<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token keyword">in</span> data<span class="token punctuation">)</span><span class="token punctuation">{</span>
+          layim<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">//【最后的交互时间】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">lastInteractionTime</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// debugger;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>arguments<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>lastInteractionTimeValue <span class="token operator">=</span> arguments<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lastInteractionTimeValue
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">//【建立心跳】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">ping</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;-------------&gt;准备心跳中~&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//建立一个定时器，定时心跳</span>
+    self<span class="token punctuation">.</span>pingIntervalId <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> iv <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> self<span class="token punctuation">.</span><span class="token function">lastInteractionTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 已经多久没发消息了</span>
+
+      <span class="token comment">// debugger;</span>
+
+      <span class="token comment">// 单位：秒</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>heartbeatSendInterval <span class="token operator">+</span> iv<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> self<span class="token punctuation">.</span>heartbeatTimeout<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        self<span class="token punctuation">.</span>socket<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+          type<span class="token operator">:</span> <span class="token string">'pingMessage'</span>
+          <span class="token punctuation">,</span> data<span class="token operator">:</span> <span class="token string">'ping'</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;-------------&gt;心跳中~&quot;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heartbeatSendInterval<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//【尝试重连：心跳机制、重连机制】</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">reconn</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 先删除心跳定时器</span>
+    <span class="token function">clearInterval</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>pingIntervalId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 然后尝试重连</span>
+    self<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_4-4-使用-chat-js、im-js-文件"><a href="#_4-4-使用-chat-js、im-js-文件" class="header-anchor">#</a> 4.4 使用 chat.js、im.js 文件</h2> <ul><li><code>layout.ftl</code> ：模板引擎，【引入 im.js、chat.js】</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#macro layout title&gt;
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;${title}&lt;/title&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;&gt;
+    &lt;meta name=&quot;keywords&quot; content=&quot;fly,layui,前端社区&quot;&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/layui/css/layui.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/css/global.css&quot;&gt;
+
+    &lt;#--导入顺序：im.js 一定要在 chat.js 前--&gt;
+    &lt;script src=&quot;/res/layui/layui.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/sockjs.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/stomp.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/im.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/chat.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+&lt;/#macro&gt;
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/test/Chapter04/Part03-集成RabbitMQ保证ES随文章增删改查-实时更新.html" class="prev">
+        Part03-集成RabbitMQ保证ES随文章增删改查-实时更新
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/test/assets/js/app.6710735c.js" defer></script><script src="/test/assets/js/2.5b8d21c8.js" defer></script><script src="/test/assets/js/27.4a36609b.js" defer></script>
+  </body>
+</html>
