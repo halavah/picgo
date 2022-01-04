@@ -1,2 +1,2 @@
-### PinGo
+## PinGo
 Speaking for me - PicGo
