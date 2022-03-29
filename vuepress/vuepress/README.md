@@ -23,8 +23,3 @@
 - 访问网址：<http://localhost:8675/>
 - 测试账户：11111@qq.com
 - 测试密码：123456
-
-## 项目鸣谢
-
-- 项目原作者：[MarkerHub](https://github.com/MarkerHub/)
-- 项目原地址：[eblog](https://github.com/MarkerHub/eblog)
