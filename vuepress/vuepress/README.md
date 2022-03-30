@@ -19,7 +19,7 @@
 
 ## 项目说明
 
-- 项目地址：<https://github.com/halavah/blog/tree/master/xblog>
-- 访问网址：<http://localhost:8675/>
+- 项目地址：<https://github.com/halavah/grower/tree/master/forum>
+- 访问网址：<http://localhost:8080/>
 - 测试账户：11111@qq.com
 - 测试密码：123456
