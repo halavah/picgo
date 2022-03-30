@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Xblog',
+  title: 'Forum',
 
   description: 'Project documentation',
 
@@ -22,7 +22,7 @@ module.exports = {
     nav: [
       {
         text: '项目地址',
-        link: 'https://github.com/halavah/blog/tree/master/xblog',
+        link: 'https://github.com/halavah/grower/tree/master/forum',
       },
       {
         text: '关于我',
@@ -74,7 +74,7 @@ module.exports = {
           title: 'Chapter01',
           collapsable: true,
           children: [
-            '/Chapter01/Part01-博客页面划分',
+            '/Chapter01/Part01-网站页面划分',
             '/Chapter01/Part02-MyBatis-Plus的使用',
             '/Chapter01/Part03-Controller控制层接口',
             '/Chapter01/Part04-自定义Freemaker标签',
@@ -100,10 +100,10 @@ module.exports = {
           title: 'Chapter03',
           collapsable: true,
           children: [
-            '/Chapter03/Part01-集成Shiro实现博客详情-收藏文章',
-            '/Chapter03/Part02-集成Shiro实现博客详情-添加文章、编辑文章、提交文章',
-            '/Chapter03/Part03-集成Shiro实现博客详情-超级用户、删除、置顶、精华',
-            '/Chapter03/Part04-集成Shiro实现博客详情-用户文章、用户评论',
+            '/Chapter03/Part01-集成Shiro实现文章详情-收藏文章',
+            '/Chapter03/Part02-集成Shiro实现文章详情-添加文章、编辑文章、提交文章',
+            '/Chapter03/Part03-集成Shiro实现文章详情-超级用户、删除、置顶、精华',
+            '/Chapter03/Part04-集成Shiro实现文章详情-用户文章、用户评论',
           ],
         },
         {
