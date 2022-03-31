@@ -100,10 +100,10 @@ module.exports = {
           title: 'Chapter03',
           collapsable: true,
           children: [
-            '/Chapter03/Part01-集成Shiro实现文章详情-收藏文章',
-            '/Chapter03/Part02-集成Shiro实现文章详情-添加文章、编辑文章、提交文章',
-            '/Chapter03/Part03-集成Shiro实现文章详情-超级用户、删除、置顶、精华',
-            '/Chapter03/Part04-集成Shiro实现文章详情-用户文章、用户评论',
+            '/Chapter03/Part01-集成Shiro实现帖子详情-收藏文章',
+            '/Chapter03/Part02-集成Shiro实现帖子详情-添加文章、编辑文章、提交文章',
+            '/Chapter03/Part03-集成Shiro实现帖子详情-超级用户、删除、置顶、精华',
+            '/Chapter03/Part04-集成Shiro实现帖子详情-用户文章、用户评论',
           ],
         },
         {

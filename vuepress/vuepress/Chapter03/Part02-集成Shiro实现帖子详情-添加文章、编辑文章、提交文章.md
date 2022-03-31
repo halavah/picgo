@@ -17,7 +17,7 @@ blog
 │          │         edit.ftl
 ```
 
-## 2.1 博客详情：添加文章/编辑文章、提交文章
+## 2.1 帖子详情：添加文章/编辑文章、提交文章
 
 - `PostController.java` ：控制层，【添加】、【编辑】、【提交】
 
@@ -168,7 +168,7 @@ public class PostController extends BaseController {
 </@layout>
 ```
 
-## 2.2 博客详情：添加文章/编辑文章-使用表情
+## 2.2 帖子详情：添加文章/编辑文章-使用表情
 
 - `edit.ftl` ：模板引擎，默认表情无法被识别，需要引入 fly、face
 
@@ -177,7 +177,7 @@ public class PostController extends BaseController {
 <#include "/inc/layout.ftl" />
 
 <#--【三、填充（导航栏 + 页脚）】-->
-<@layout "博客详情">
+<@layout "帖子详情">
 
   <#--【二、分类】-->
   <#include "/inc/header-panel.ftl" />

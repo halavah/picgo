@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Part01-集成WeSocket实现用户评论-即时通讯 | Forum</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/PicGo/logo/favicon.ico">
+    <meta name="description" content="Project documentation">
+    
+    <link rel="preload" href="/PicGo/assets/css/0.styles.badde12b.css" as="style"><link rel="preload" href="/PicGo/assets/js/app.2d2dd742.js" as="script"><link rel="preload" href="/PicGo/assets/js/2.38e92919.js" as="script"><link rel="preload" href="/PicGo/assets/js/24.6594c67d.js" as="script"><link rel="prefetch" href="/PicGo/assets/js/10.07cda984.js"><link rel="prefetch" href="/PicGo/assets/js/11.7fa2fe0b.js"><link rel="prefetch" href="/PicGo/assets/js/12.55228b10.js"><link rel="prefetch" href="/PicGo/assets/js/13.b1558f34.js"><link rel="prefetch" href="/PicGo/assets/js/14.b6a707dd.js"><link rel="prefetch" href="/PicGo/assets/js/15.c0409504.js"><link rel="prefetch" href="/PicGo/assets/js/16.e605c9c4.js"><link rel="prefetch" href="/PicGo/assets/js/17.0bb6839c.js"><link rel="prefetch" href="/PicGo/assets/js/18.51f7e5c0.js"><link rel="prefetch" href="/PicGo/assets/js/19.d2fff324.js"><link rel="prefetch" href="/PicGo/assets/js/20.490b0e2f.js"><link rel="prefetch" href="/PicGo/assets/js/21.337f9cd3.js"><link rel="prefetch" href="/PicGo/assets/js/22.50521069.js"><link rel="prefetch" href="/PicGo/assets/js/23.f54077f8.js"><link rel="prefetch" href="/PicGo/assets/js/25.55b88fda.js"><link rel="prefetch" href="/PicGo/assets/js/26.88b6a152.js"><link rel="prefetch" href="/PicGo/assets/js/27.50f2ea4e.js"><link rel="prefetch" href="/PicGo/assets/js/28.e395e5be.js"><link rel="prefetch" href="/PicGo/assets/js/3.87e74747.js"><link rel="prefetch" href="/PicGo/assets/js/4.5fc8d47d.js"><link rel="prefetch" href="/PicGo/assets/js/5.f280cf85.js"><link rel="prefetch" href="/PicGo/assets/js/6.c14ca87e.js"><link rel="prefetch" href="/PicGo/assets/js/7.8cba2e22.js"><link rel="prefetch" href="/PicGo/assets/js/8.38308cce.js"><link rel="prefetch" href="/PicGo/assets/js/9.e084d6bd.js">
+    <link rel="stylesheet" href="/PicGo/assets/css/0.styles.badde12b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/PicGo/" class="home-link router-link-active"><img src="/PicGo/logo/favicon.ico" alt="Forum" class="logo"> <span class="site-name can-hide">Forum</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/halavah/grower/tree/master/forum" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.github.io/halavah/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/halavah/grower/tree/master/forum" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  项目地址
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://halavah.github.io/halavah/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  关于我
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/PicGo/" aria-current="page" class="sidebar-link">快速入手</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter01</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter02</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Chapter03</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Chapter04</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/PicGo/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html" class="active sidebar-link">Part01-集成WeSocket实现用户评论-即时通讯</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/PicGo/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html#_1-1-集成-websocket-环境" class="sidebar-link">1.1 集成 WebSocket 环境</a></li><li class="sidebar-sub-header"><a href="/PicGo/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html#_1-2-配置-websocket-环境" class="sidebar-link">1.2 配置 WebSocket 环境</a></li><li class="sidebar-sub-header"><a href="/PicGo/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html#_1-3-使用-websocket-通讯" class="sidebar-link">1.3 使用 WebSocket 通讯</a></li><li class="sidebar-sub-header"><a href="/PicGo/Chapter04/Part01-集成WeSocket实现用户评论-即时通讯.html#_1-4-其他-用户中心-批量将未读改为已读" class="sidebar-link">1.4 其他：用户中心-批量将未读改为已读</a></li></ul></li><li><a href="/PicGo/Chapter04/Part02-集成Elasticsearch实现文章内容-搜索引擎.html" class="sidebar-link">Part02-集成Elasticsearch实现文章内容-搜索引擎</a></li><li><a href="/PicGo/Chapter04/Part03-集成RabbitMQ保证ES随文章增删改查-实时更新.html" class="sidebar-link">Part03-集成RabbitMQ保证ES随文章增删改查-实时更新</a></li><li><a href="/PicGo/Chapter04/Part04-集成WebSocket-tio实现网络群聊-聊天室.html" class="sidebar-link">Part04-集成WebSocket-tio实现网络群聊-聊天室</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="part01-集成wesocket实现用户评论-即时通讯"><a href="#part01-集成wesocket实现用户评论-即时通讯" class="header-anchor">#</a> Part01-集成WeSocket实现用户评论-即时通讯</h1> <div class="language-text extra-class"><pre class="language-text"><code>blog
+│  pom.xml
+│
+└─src
+│  └─main
+│      ├─java
+│      │   └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      WsConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java
+│      │          │
+│      │          ├─service
+│      │          │  │   WsService.java
+│      │          │  │
+│      │          │  └─impl
+│      │          │         WsServiceImpl.java
+│      │
+│      └─resources
+│          ├─templates
+│          │  └─inc
+│          │         layout.ftl
+</code></pre></div><h2 id="_1-1-集成-websocket-环境"><a href="#_1-1-集成-websocket-环境" class="header-anchor">#</a> 1.1 集成 WebSocket 环境</h2> <ul><li><code>pom.xml</code> ：项目依赖，【websocket 通讯】</li></ul> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">&gt;</span></span>
+  <span class="token comment">&lt;!--websocket--&gt;</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>spring-boot-starter-websocket<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><h2 id="_1-2-配置-websocket-环境"><a href="#_1-2-配置-websocket-环境" class="header-anchor">#</a> 1.2 配置 WebSocket 环境</h2> <ul><li><code>WsConfig.java</code> ：配置类，【点对点通讯，订阅通道/user/、/topic/，访问地址/websocket】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * WebSocket 配置类：点对点
+ */</span>
+<span class="token annotation punctuation">@EnableAsync</span> <span class="token comment">//开启异步消息</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@EnableWebSocketMessageBroker</span> <span class="token comment">//表示开启使用STOMP协议的消息代理</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WsConfig</span> <span class="token keyword">implements</span> <span class="token class-name">WebSocketMessageBrokerConfigurer</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">registerStompEndpoints</span><span class="token punctuation">(</span><span class="token class-name">StompEndpointRegistry</span> registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        registry<span class="token punctuation">.</span><span class="token function">addEndpoint</span><span class="token punctuation">(</span><span class="token string">&quot;/websocket&quot;</span><span class="token punctuation">)</span> <span class="token comment">// 注册一个端点：websocket的访问地址</span>
+            <span class="token punctuation">.</span><span class="token function">withSockJS</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configureMessageBroker</span><span class="token punctuation">(</span><span class="token class-name">MessageBrokerRegistry</span> registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        registry<span class="token punctuation">.</span><span class="token function">enableSimpleBroker</span><span class="token punctuation">(</span><span class="token string">&quot;/user/&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/topic/&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//推送消息的前缀</span>
+        registry<span class="token punctuation">.</span><span class="token function">setApplicationDestinationPrefixes</span><span class="token punctuation">(</span><span class="token string">&quot;/app&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//注册代理点</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>layout.ftl</code> ：模板引擎，【引入 sockjs.js、stomp.js】</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#macro layout title&gt;
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;${title}&lt;/title&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;&gt;
+    &lt;meta name=&quot;keywords&quot; content=&quot;fly,layui,前端社区&quot;&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/layui/css/layui.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/css/global.css&quot;&gt;
+
+    &lt;#--导入script--&gt;
+    &lt;script src=&quot;/res/layui/layui.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/sockjs.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/stomp.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+&lt;/#macro&gt;
+</code></pre></div><h2 id="_1-3-使用-websocket-通讯"><a href="#_1-3-使用-websocket-通讯" class="header-anchor">#</a> 1.3 使用 WebSocket 通讯</h2> <ul><li><code>PostController.java</code> ：控制层，【即时通知作者（websocket）】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PostController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 详情detail：【评论】文章
+     */</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/post/reply/&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">reply</span><span class="token punctuation">(</span><span class="token class-name">Long</span> jid<span class="token punctuation">,</span> <span class="token class-name">String</span> content<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>jid<span class="token punctuation">,</span> <span class="token string">&quot;找不到对应的文章&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">hasLength</span><span class="token punctuation">(</span>content<span class="token punctuation">,</span> <span class="token string">&quot;评论内容不能为空&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">Post</span> post <span class="token operator">=</span> postService<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span>jid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">isTrue</span><span class="token punctuation">(</span>post <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">&quot;该文章已被删除&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 新增评论</span>
+        <span class="token class-name">Comment</span> comment <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setPostId</span><span class="token punctuation">(</span>jid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setContent</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setUserId</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setCreated</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setModified</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setLevel</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setVoteDown</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        comment<span class="token punctuation">.</span><span class="token function">setVoteUp</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        commentService<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>comment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 评论数量+1</span>
+        post<span class="token punctuation">.</span><span class="token function">setCommentCount</span><span class="token punctuation">(</span>post<span class="token punctuation">.</span><span class="token function">getCommentCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        postService<span class="token punctuation">.</span><span class="token function">updateById</span><span class="token punctuation">(</span>post<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 本周热议数量+1</span>
+        postService<span class="token punctuation">.</span><span class="token function">incrCommentCountAndUnionForWeekRank</span><span class="token punctuation">(</span>post<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 通知作者，有人评论了你的文章</span>
+        <span class="token comment">// 作者自己评论自己文章，不需要通知</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>comment<span class="token punctuation">.</span><span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> post<span class="token punctuation">.</span><span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">UserMessage</span> message <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            message<span class="token punctuation">.</span><span class="token function">setFromUserId</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            message<span class="token punctuation">.</span><span class="token function">setToUserId</span><span class="token punctuation">(</span>post<span class="token punctuation">.</span><span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            message<span class="token punctuation">.</span><span class="token function">setPostId</span><span class="token punctuation">(</span>jid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            message<span class="token punctuation">.</span><span class="token function">setCommentId</span><span class="token punctuation">(</span>comment<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            message<span class="token punctuation">.</span><span class="token function">setType</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//我的消息的【消息的类型】：0代表系统消息、1代表评论的文章、2代表回复的评论</span>
+            message<span class="token punctuation">.</span><span class="token function">setStatus</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//我的消息的【状态】：0代表未读、1代表已读</span>
+            message<span class="token punctuation">.</span><span class="token function">setCreated</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            messageService<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 即时通知【文章作者】（websocket）</span>
+            wsService<span class="token punctuation">.</span><span class="token function">sendMessCountToUser</span><span class="token punctuation">(</span>message<span class="token punctuation">.</span><span class="token function">getToUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 通知被@的人，有人回复了你的文章</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>content<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">&quot;@&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">String</span> username <span class="token operator">=</span> content<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> content<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">&quot; &quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">User</span> user <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getOne</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;username&quot;</span><span class="token punctuation">,</span> username<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>user <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token class-name">UserMessage</span> message <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                message<span class="token punctuation">.</span><span class="token function">setFromUserId</span><span class="token punctuation">(</span><span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                message<span class="token punctuation">.</span><span class="token function">setToUserId</span><span class="token punctuation">(</span>post<span class="token punctuation">.</span><span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                message<span class="token punctuation">.</span><span class="token function">setPostId</span><span class="token punctuation">(</span>jid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                message<span class="token punctuation">.</span><span class="token function">setCommentId</span><span class="token punctuation">(</span>comment<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                message<span class="token punctuation">.</span><span class="token function">setType</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//我的消息的【消息的类型】：0代表系统消息、1代表评论的文章、2代表回复的评论</span>
+                message<span class="token punctuation">.</span><span class="token function">setStatus</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//我的消息的【状态】：0代表未读、1代表已读</span>
+                message<span class="token punctuation">.</span><span class="token function">setCreated</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                messageService<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 即时通知【被@的用户】（websocket）</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token string">&quot;/post/&quot;</span> <span class="token operator">+</span> post<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>WsServiceImpl.java</code> ：业务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WsServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">WsService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">UserMessageService</span> messageService<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">SimpMessagingTemplate</span> messagingTemplate<span class="token punctuation">;</span>    <span class="token comment">//Spring自带的【消息模板】</span>
+
+    <span class="token annotation punctuation">@Async</span>  <span class="token comment">//异步消息</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendMessCountToUser</span><span class="token punctuation">(</span><span class="token class-name">Long</span> toUserId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> count <span class="token operator">=</span> messageService<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;to_user_id&quot;</span><span class="token punctuation">,</span> toUserId<span class="token punctuation">)</span> <span class="token comment">//全部数量的消息</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;status&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;0&quot;</span><span class="token punctuation">)</span>      <span class="token comment">//未读的消息  未读0 已读1</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// websocket 使用 messagingTemplate模板 进行通知，拼凑结果url为：/user/20/messCount/</span>
+        <span class="token comment">// super.convertAndSend(this.destinationPrefix + user + destination, payload, headers, postProcessor);</span>
+        messagingTemplate<span class="token punctuation">.</span><span class="token function">convertAndSendToUser</span><span class="token punctuation">(</span>toUserId<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">&quot;/messCount&quot;</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>layout.ftl</code> ：模板引擎</li></ul> <div class="language-injectedfreemarker extra-class"><pre class="language-text"><code>&lt;#--宏：1.macro定义脚本，名为layout，参数为title--&gt;
+&lt;#macro layout title&gt;
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;${title}&lt;/title&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;&gt;
+    &lt;meta name=&quot;keywords&quot; content=&quot;fly,layui,前端社区&quot;&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/layui/css/layui.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/res/css/global.css&quot;&gt;
+
+    &lt;#--导入script--&gt;
+    &lt;script src=&quot;/res/layui/layui.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/sockjs.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/res/js/stomp.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+  &lt;#--宏common.ftl：分页、一条数据posting、个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）--&gt;
+  &lt;#include &quot;/inc/common.ftl&quot; /&gt;&lt;#--经过测试，发现common公共包，必须在header.ftl等之前进行“include导入”--&gt;
+
+  &lt;#--【一、导航栏】--&gt;
+  &lt;#include &quot;/inc/header.ftl&quot;/&gt;
+
+  &lt;#--【三、所有引用该“带有宏的标签layout.ftl”都会执行该操作：&lt;@layout &quot;首页&quot;&gt;&lt;/@layout&gt;中的数据 -&gt; 填充到&lt;#nested/&gt;标签中】--&gt;
+  &lt;#nested&gt;
+
+  &lt;#--【四、页脚】--&gt;
+  &lt;#include &quot;/inc/footer.ftl&quot;/&gt;
+
+  &lt;script&gt;
+    &lt;#-----------------方式二：利用session来实现【登录状态】----------------------&gt;
+    // layui.cache.page = '';
+    layui.cache.user = {
+      username: '${profile.username!&quot;游客&quot;}'
+      , uid: ${profile.id!&quot;-1&quot;}
+      , avatar: '${profile.avatar!&quot;/res/images/avatar/00.jpg&quot;}'
+      , experience: 83
+      , sex: '${profile.gender!&quot;男&quot;}'
+    };
+
+    layui.config({
+      version: &quot;3.0.0&quot;
+      , base: '/res/mods/' //这里实际使用时，建议改成绝对路径
+    }).extend({
+      fly: 'index'
+    }).use('fly');
+  &lt;/script&gt;
+
+  &lt;script&gt;
+    &lt;#--使用ws实现【评论消息的即时通讯】--&gt;
+    $(function () {
+      var elemUser = $('.fly-nav-user');
+      if (layui.cache.user.uid !== -1 &amp;&amp; elemUser[0]) { //根据layui使用，layui.cache.user.uid !== -1 时，表示【用户登录成功】
+        var socket = new SockJS(&quot;/websocket&quot;) //注册一个端点：websocket的访问地址
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+          //subscribe订阅消息
+          stompClient.subscribe(&quot;/user/&quot; + ${profile.id} + &quot;/messCount&quot;, function (res) {
+            console.log(res);
+            showTips(res.body);   //消息的显示：弹窗
+          })
+        });
+
+      }
+    });
+
+    //消息的显示：弹窗，【将/res/mods/index.js中的消息弹窗 -&gt; 复制到此处，供ws使用】
+    function showTips(count) {
+      var msg = $('&lt;a class=&quot;fly-nav-msg&quot; href=&quot;javascript:;&quot;&gt;' + count + '&lt;/a&gt;');
+      var elemUser = $('.fly-nav-user');
+      elemUser.append(msg);
+      //click，点击跳转【用户中心 /user/mess】
+      msg.on('click', function () {
+        location.href = &quot;/user/mess&quot;;
+      });
+      //tips，提示【你有X条未读消息】
+      layer.tips('你有 ' + count + ' 条未读消息', msg, {
+        tips: 3
+        , tipsMore: true
+        , fixed: true
+      });
+      msg.on('mouseenter', function () {
+        layer.closeAll('tips');
+      })
+    }
+  &lt;/script&gt;
+
+  &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/#macro&gt;
+</code></pre></div><h2 id="_1-4-其他-用户中心-批量将未读改为已读"><a href="#_1-4-其他-用户中心-批量将未读改为已读" class="header-anchor">#</a> 1.4 其他：用户中心-批量将未读改为已读</h2> <ul><li><code>UserController.java</code> ：控制层，【批量处理，将全部消息的【状态：未读 0】改为【状态：已读 1】，并【批量修改 状态为已读 1】】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token keyword">extends</span> <span class="token class-name">BaseController</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * 我的消息：查询消息
+     */</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/user/mess&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">mess</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">IPage</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessageVo</span><span class="token punctuation">&gt;</span></span> page <span class="token operator">=</span> messageService<span class="token punctuation">.</span><span class="token function">paging</span><span class="token punctuation">(</span><span class="token function">getPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">&quot;to_user_id&quot;</span><span class="token punctuation">,</span> <span class="token function">getProfileId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">orderByDesc</span><span class="token punctuation">(</span><span class="token string">&quot;created&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">&quot;pageData&quot;</span><span class="token punctuation">,</span> page<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//查看消息时，将全部消息的【状态：未读0】改为【状态：已读1】，并【批量修改 状态为已读1】</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">&gt;</span></span> ids <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">UserMessageVo</span> messageVo <span class="token operator">:</span> page<span class="token punctuation">.</span><span class="token function">getRecords</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>messageVo<span class="token punctuation">.</span><span class="token function">getStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                ids<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>messageVo<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        messageService<span class="token punctuation">.</span><span class="token function">updateToReaded</span><span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//批量处理</span>
+
+        <span class="token keyword">return</span> <span class="token string">&quot;/user/mess&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UserMessageServiceImpl.java</code> ：业务层实现，【批量处理】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserMessageServiceImpl</span> <span class="token keyword">extends</span> <span class="token class-name">ServiceImpl</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessageMapper</span><span class="token punctuation">,</span> <span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span> <span class="token keyword">implements</span> <span class="token class-name">UserMessageService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">updateToReaded</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">&gt;</span></span> ids<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ids<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        messageMapper<span class="token punctuation">.</span><span class="token function">updateToReaded</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">in</span><span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">,</span> ids<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UserMessageMapper.java</code> ：数据层接口，【开启事务】</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserMessageMapper</span> <span class="token keyword">extends</span> <span class="token class-name">BaseMapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token keyword">void</span> <span class="token function">updateToReaded</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>WRAPPER<span class="token punctuation">)</span> <span class="token class-name">QueryWrapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">UserMessage</span><span class="token punctuation">&gt;</span></span> wrapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><code>UserMessageMapper.xml</code> ：数据层实现，【SQL 命令】</li></ul> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>updateToReaded<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  UPDATE m_user_message
+  SET status = 1
+  ${ew.customSqlSegment}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>update</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">5/13/2021, 5:23:11 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/PicGo/Chapter03/Part04-集成Shiro实现帖子详情-用户文章、用户评论.html" class="prev">
+        Part04-集成Shiro实现帖子详情-用户文章、用户评论
+      </a></span> <span class="next"><a href="/PicGo/Chapter04/Part02-集成Elasticsearch实现文章内容-搜索引擎.html">
+        Part02-集成Elasticsearch实现文章内容-搜索引擎
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/PicGo/assets/js/app.2d2dd742.js" defer></script><script src="/PicGo/assets/js/2.38e92919.js" defer></script><script src="/PicGo/assets/js/24.6594c67d.js" defer></script>
+  </body>
+</html>

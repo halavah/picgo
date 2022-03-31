@@ -18,7 +18,7 @@ blog
 │      │          │      AuthFilter.java
 ```
 
-## 1.1 博客详情：收藏文章【判断用户是否收藏了文章】
+## 1.1 帖子详情：收藏文章【判断用户是否收藏了文章】
 
 - `PostController.java` ：控制层，【判断用户是否收藏了文章】
 
@@ -42,7 +42,7 @@ public class PostController extends BaseController {
 }
 ```
 
-## 1.2 博客详情：收藏文章【加入收藏】
+## 1.2 帖子详情：收藏文章【加入收藏】
 
 - `PostController.java` ：控制层，【加入收藏】
 
@@ -85,7 +85,7 @@ public class PostController extends BaseController {
 }
 ```
 
-## 1.3 博客详情：收藏文章【取消收藏】
+## 1.3 帖子详情：收藏文章【取消收藏】
 
 - `PostController.java` ：控制层，【取消收藏】
 
