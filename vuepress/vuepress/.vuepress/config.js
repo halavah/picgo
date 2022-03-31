@@ -26,7 +26,7 @@ module.exports = {
       },
       {
         text: '关于我',
-        link: 'https://halavah.github.io/halavah/',
+        link: 'https://github.com/halavah',
       },
       // {
       //   text: '关于我',
