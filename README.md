@@ -1,2 +1,2 @@
-### PicGo
-Speaking for me - PicGoq
+## PicGo
+Speaking for me - PicGo
