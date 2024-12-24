@@ -5,7 +5,7 @@ module.exports = {
 
   head: [['link', { rel: 'icon', href: '/logo/favicon.ico' }]],
 
-  base: '/PicGo/',
+  base: '/',
 
   dest: '../docs',
 

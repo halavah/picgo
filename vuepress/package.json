@@ -6,5 +6,9 @@
   "scripts": {
     "vuepress:dev": "vuepress dev vuepress --no-cache",
     "vuepress:build": "vuepress build vuepress"
+  },
+  "dependencies": {
+    "global": "^4.4.0",
+    "vuepress": "^1.9.10"
   }
 }
